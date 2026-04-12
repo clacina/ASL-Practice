@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(git init)",
+      "Bash(git switch:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq . > tool-use.json"
+          },
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path' | { read fp; [[ \"$fp\" =~ \\.jsx?$ ]] && npx prettier --write \"$fp\"; }"
+          }
+        ]
+      }
+    ]
+  }
+}
