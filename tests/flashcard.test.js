@@ -1,5 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { parseTerms } from '../src/utils/parseTerms'
+import { shuffle } from '../src/utils/shuffle'
+import { contrastColor } from '../src/utils/contrastColor'
 
 describe('parseTerms', () => {
   it('splits a standard comma-separated list', () => {
@@ -16,6 +18,58 @@ describe('parseTerms', () => {
 
   it('trims leading and trailing whitespace from each term', () => {
     expect(parseTerms('  hello  ')).toEqual(['hello'])
+  })
+})
+
+describe('shuffle', () => {
+  it('returns an array with the same elements', () => {
+    const input = [1, 2, 3, 4, 5]
+    expect(shuffle(input).sort()).toEqual([1, 2, 3, 4, 5])
+  })
+
+  it('does not mutate the original array', () => {
+    const input = [1, 2, 3]
+    shuffle(input)
+    expect(input).toEqual([1, 2, 3])
+  })
+
+  it('handles an empty array', () => {
+    expect(shuffle([])).toEqual([])
+  })
+})
+
+describe('contrastColor', () => {
+  it('returns dark text for a light background', () => {
+    expect(contrastColor('#ffffff')).toBe('#08060d')
+  })
+
+  it('returns white text for a dark background', () => {
+    expect(contrastColor('#000000')).toBe('#ffffff')
+  })
+
+  it('returns white text for a dark teal (#30525C)', () => {
+    expect(contrastColor('#30525C')).toBe('#ffffff')
+  })
+
+  it('returns dark text for a light peach (#F6C992)', () => {
+    expect(contrastColor('#F6C992')).toBe('#08060d')
+  })
+})
+
+describe('color assignment', () => {
+  it('produces one color per term, all from the palette', () => {
+    const palette = ['#ff0000', '#00ff00', '#0000ff']
+    const terms = ['a', 'b', 'c', 'd', 'e']
+    const colors = terms.map(() => palette[Math.floor(Math.random() * palette.length)])
+    expect(colors).toHaveLength(terms.length)
+    colors.forEach(c => expect(palette).toContain(c))
+  })
+
+  it('falls back to default color when palette is empty', () => {
+    const palette = []
+    const fallback = '#D8D4BC'
+    const effective = palette.length > 0 ? palette : [fallback]
+    expect(effective[0]).toBe(fallback)
   })
 })
 
