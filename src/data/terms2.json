@@ -42,6 +42,17 @@
     {"term": "Day", "code": ""},
     {"term": "Weekend", "code": "", "fix": true},
     {"term": "Holiday", "code": "", "fix": true},
-    {"term": "Time", "code": ""}
+    {"term": "Who", "code": ""},
+    {"term": "Which", "code": "", "fix": true},
+    {"term": "Where", "code": ""},
+    {"term": "Why", "code": ""},
+    {"term": "Their", "code":  "", "fix": true},
+    {"term": "There", "code": "", "fix": true},
+    {"term": "They", "code": "", "fix": true},
+    {"term": "We", "code": "", "fix": true},
+    {"term": "Date", "code": ""},
+    {"term": "Time", "code": ""},
+    {"term": "Clock", "code": ""},
+    {"term": "Calendar", "code": ""}
 ]
 

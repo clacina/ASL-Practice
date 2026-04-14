@@ -63,15 +63,11 @@ export function TermInput({onStart}) {
     }, []);
 
     useEffect(() => {
-        console.log(wordlist);
-        console.log(numberList);
         CATEGORIES.find((category) => category.title === "Numbers").terms = numberList;
         CATEGORIES.find((category) => category.title === "Spelling").terms = wordlist;
     }, [wordlist, numberList]);
 
     function handleStart(category) {
-        // const terms = parseTerms(inputValue);
-        console.log(category);
         const terms = category.terms;
         if (terms.length === 0) {
             setError("Please enter at least one term before starting.");

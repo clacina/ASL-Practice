@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { CardColors } from './data/card-colors'
-import { shuffle } from './utils/shuffle'
 import { TermInput } from './components/TermInput'
 import { FlashcardSession } from './components/FlashcardSession'
 import './App.css'
@@ -11,11 +10,9 @@ function App() {
   const [cardColors, setCardColors] = useState([])
 
   function handleStart(parsedTerms) {
-    // const shuffled = shuffle(parsedTerms)
-    const shuffled = parsedTerms
     const palette = CardColors.length > 0 ? CardColors : ['#D8D4BC']
-    const colors = shuffled.map(() => palette[Math.floor(Math.random() * palette.length)])
-    setTerms(shuffled)
+    const colors = parsedTerms.map(() => palette[Math.floor(Math.random() * palette.length)])
+    setTerms(parsedTerms)
     setCardColors(colors)
     setView('session')
   }

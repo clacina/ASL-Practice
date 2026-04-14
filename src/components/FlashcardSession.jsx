@@ -1,45 +1,54 @@
 import {useState, useEffect, useCallback} from "react";
 import {contrastColor} from "../utils/contrastColor";
+import {shuffle} from "../utils/shuffle";
 
 export function FlashcardSession({terms, cardColors, onBack}) {
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [localTerms, setLocalTerms] = useState(terms);
+    const [localColors, setLocalColors] = useState(cardColors);
 
     const goNext = useCallback(() => {
-        const newIndex = (currentIndex + 1) % terms.length;
+        const newIndex = (currentIndex + 1) % localTerms.length;
         console.log("New Index: ", newIndex);
         setCurrentIndex(newIndex);
-    }, [currentIndex, terms]);
+    }, [currentIndex, localTerms.length]);
 
     const goPrev = useCallback(() => {
-        const newIndex = (currentIndex - 1 + terms.length) % terms.length;
-        // setCurrentIndex(i => (i - 1 + terms.length) % terms.length);
+        const newIndex = (currentIndex - 1 + localTerms.length) % localTerms.length;
         console.log("New Index: ", newIndex);
         setCurrentIndex(newIndex);
-    }, [currentIndex, terms.length]);
+    }, [currentIndex, localTerms.length]);
+
+    function handleShuffle() {
+        const indices = shuffle([...localTerms.keys()]);
+        setLocalTerms(indices.map(i => localTerms[i]));
+        setLocalColors(indices.map(i => localColors[i]));
+        setCurrentIndex(0);
+    }
 
     function showVideo() {
-        const url = `https://www.signasl.org/sign/${terms[currentIndex]}`;
+        const url = `https://www.signasl.org/sign/${localTerms[currentIndex]}`;
         console.log("Grabbing: ", url);
     }
 
     function getPlaybackUrl() {
-        console.log("Entry: ", terms[currentIndex]);
-        const term = terms[currentIndex].term;
-        const code = terms[currentIndex].code;
-        if (Object.prototype.hasOwnProperty.call(terms[currentIndex], "type")) {
-            switch (terms[currentIndex].type) {
+        console.log("Entry: ", localTerms[currentIndex]);
+        const term = localTerms[currentIndex].term;
+        const code = localTerms[currentIndex].code;
+        if (Object.prototype.hasOwnProperty.call(localTerms[currentIndex], "type")) {
+            switch (localTerms[currentIndex].type) {
                 case "spell":
                     console.log("returning url: ", '/fingerspell/aslg.gif');
                     return ('/fingerspell/aslg.gif');
                 default:
-                    console.error("Unknown term type: ", terms[currentIndex].type);
+                    console.error("Unknown term type: ", localTerms[currentIndex].type);
             }
         }
-        if(terms[currentIndex].code.length === 0) {
+        if(localTerms[currentIndex].code.length === 0) {
             return `https://media.signbsl.com/videos/asl/startasl/mp4/${term.toLowerCase()}.mp4`;
         }
         console.log("returning url: ", code);
-        return terms[currentIndex].code;
+        return localTerms[currentIndex].code;
     }
 
     useEffect(() => {
@@ -53,7 +62,7 @@ export function FlashcardSession({terms, cardColors, onBack}) {
     }, [goNext, goPrev]);
 
 
-    const bg = cardColors[currentIndex];
+    const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
 
     return (
@@ -62,20 +71,21 @@ export function FlashcardSession({terms, cardColors, onBack}) {
                 ← Back
             </button>
             <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
-                <span className="flashcard-term">{terms[currentIndex].term}</span>
+                <span className="flashcard-term">{localTerms[currentIndex].term}</span>
             </div>
             <div className="flashcard-video">
-                <img
-                    // width="560"
-                    // height="315"
-                    alt="ASL Letter"
+                <iframe
+                    width="560"
+                    height="315"
+                    title="ASL sign video"
                     src={getPlaybackUrl()}
-                ></img>
+                ></iframe>
             </div>
-            <p className="flashcard-position">{currentIndex + 1} / {terms.length}</p>
+            <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
             <div className="flashcard-nav">
                 <button className="btn-nav" onClick={goPrev}>← Prev</button>
                 <button className="btn-nav" onClick={goNext}>Next →</button>
+                <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
                 <button onClick={showVideo}>Show Video</button>
             </div>
         </div>
