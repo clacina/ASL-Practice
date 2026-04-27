@@ -163,11 +163,24 @@
 .flashcard-session {
   display: flex;
   flex-direction: column;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+.flashcard-session-body {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 24px;
+  flex-grow: 1;
+}
+
+.flashcard-session-content {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 24px;
-  width: 600px;
-  height: 400px;
-  flex-grow: 0;
+  flex-grow: 1;
 }
 
 .btn-back {
@@ -223,6 +236,7 @@
 
 .flashcard-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -267,5 +281,20 @@
   &:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+}
+
+.term-select {
+  min-width: 200px;
+  background: var(--code-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 15px;
+  padding: 4px;
+  cursor: pointer;
+
+  option {
+    padding: 4px 8px;
   }
 }

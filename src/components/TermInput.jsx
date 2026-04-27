@@ -2,6 +2,7 @@ import {useState, useEffect} from "react";
 
 import terms from "../data/terms.json" with {type: "json"};
 import other_terms from "../data/terms2.json" with {type: "json"};
+import questions from "../data/questions.json" with {type: "json"};
 import axios from "axios";
 
 
@@ -18,7 +19,9 @@ const CATEGORIES = [
     {title: "Numbers", terms: terms},
     {title: "Class Terms", terms: terms},
     {title: "Other Terms", terms: other_terms},
-    {title: "Faire Terms", terms: terms}
+    {title: "Faire Terms", terms: terms},
+    {title: "Term Selection", terms: [...terms, ...other_terms]},
+    {title: "Questions", terms: questions},
 ];
 
 export function TermInput({onStart}) {

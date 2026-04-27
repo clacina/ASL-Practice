@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from "react";
+import {useState, useEffect, useCallback, useMemo} from "react";
 import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
 
@@ -6,6 +6,7 @@ export function FlashcardSession({terms, cardColors, onBack}) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localTerms, setLocalTerms] = useState(terms);
     const [localColors, setLocalColors] = useState(cardColors);
+    const [showSelect, setShowSelect] = useState(false);
 
     const goNext = useCallback(() => {
         const newIndex = (currentIndex + 1) % localTerms.length;
@@ -62,6 +63,11 @@ export function FlashcardSession({terms, cardColors, onBack}) {
     }, [goNext, goPrev]);
 
 
+    const sortedTerms = useMemo(
+        () => localTerms.map((t, i) => ({term: t.term, i})).sort((a, b) => a.term.localeCompare(b.term)),
+        [localTerms]
+    );
+
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
 
@@ -70,23 +76,40 @@ export function FlashcardSession({terms, cardColors, onBack}) {
             <button className="btn-back" onClick={onBack}>
                 ← Back
             </button>
-            <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
-                <span className="flashcard-term">{localTerms[currentIndex].term}</span>
-            </div>
-            <div className="flashcard-video">
-                <iframe
-                    width="560"
-                    height="315"
-                    title="ASL sign video"
-                    src={getPlaybackUrl()}
-                ></iframe>
-            </div>
-            <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-            <div className="flashcard-nav">
-                <button className="btn-nav" onClick={goPrev}>← Prev</button>
-                <button className="btn-nav" onClick={goNext}>Next →</button>
-                <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                <button onClick={showVideo}>Show Video</button>
+            <div className="flashcard-session-body">
+                <div className="flashcard-session-content">
+                    <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
+                        <span className="flashcard-term">{localTerms[currentIndex].term}</span>
+                    </div>
+                    <div className="flashcard-video">
+                        <iframe
+                            width="560"
+                            height="315"
+                            title="ASL sign video"
+                            src={getPlaybackUrl()}
+                        ></iframe>
+                    </div>
+                    <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
+                    <div className="flashcard-nav">
+                        <button className="btn-nav" onClick={goPrev}>← Prev</button>
+                        <button className="btn-nav" onClick={goNext}>Next →</button>
+                        <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
+                        <button onClick={showVideo}>Show Video</button>
+                        <button className="btn-nav" onClick={() => setShowSelect(s => !s)}>Select</button>
+                    </div>
+                </div>
+                {showSelect && (
+                    <select
+                        size={20}
+                        className="term-select"
+                        onChange={e => setCurrentIndex(Number(e.target.value))}
+                        value={currentIndex}
+                    >
+                        {sortedTerms.map(({term, i}) => (
+                            <option key={i} value={i}>{term}</option>
+                        ))}
+                    </select>
+                )}
             </div>
         </div>
     );
