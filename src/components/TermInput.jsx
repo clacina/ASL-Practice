@@ -7,13 +7,13 @@ import verbs from "../data/verbs.json" with {type: "json"};
 import axios from "axios";
 
 const CATEGORIES = [
-    {title: "Spelling", terms: terms},
-    {title: "Numbers", terms: terms},
-    {title: "Class Terms", terms: terms},
-    {title: "Other Terms", terms: other_terms},
-    {title: "Faire Terms", terms: terms},
-    {title: "Questions", terms: questions},
-    {title: "Verbs", terms: verbs}
+    {title: "Finger Spelling", description: "Practice spelling words letter by letter using ASL handshapes.", terms: terms},
+    {title: "Numbers", description: "Learn to sign numbers in American Sign Language.", terms: terms},
+    {title: "ASL Level I && II Class Terms", description: "Core vocabulary from ASL Level I and II coursework.", terms: terms},
+    {title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
+    {title: "Verbs", description: "Common action words and verbs in American Sign Language.", terms: verbs},
+    {title: "Other Terms", description: "Additional vocabulary terms for expanding your ASL knowledge.", terms: other_terms},
+    {title: "Renaissance Faire Terms", description: "Specialized vocabulary for Renaissance Faire settings.", terms: terms},
 ];
 
 const webResources = [
@@ -61,7 +61,7 @@ export function TermInput({onStart}) {
 
     useEffect(() => {
         CATEGORIES.find((category) => category.title === "Numbers").terms = numberList;
-        CATEGORIES.find((category) => category.title === "Spelling").terms = wordlist;
+        CATEGORIES.find((category) => category.title === "Finger Spelling").terms = wordlist;
     }, [wordlist, numberList]);
 
     function handleStart(category) {
@@ -71,12 +71,10 @@ export function TermInput({onStart}) {
             return;
         }
         setError("");
-        onStart(terms);
+        onStart(terms, category.title, category.description);
     }
     return (
         <div className="term-input">
-            <h1 className="term-input__title">ASL Flashcards</h1>
-
             <div className="term-input__body">
                 <div className="term-input__categories">
                     {CATEGORIES.map(category => (

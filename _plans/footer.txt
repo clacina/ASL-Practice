@@ -1,0 +1,7 @@
+Add a footer to the TermInput page.
+Include an icon representing American Sign Language.
+Include a disclaimer section with notes saying:
+ - that this site is not for professional use and is only for helping study ASL.
+ - uses public domain videos that are not owned by this creator.
+ - does not promise that the signs provided are the most recent versions of ASL
+ - attempts to restrict signs to ASL vs other sign languages (BSL, etc).

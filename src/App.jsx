@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { CardColors } from './data/card-colors'
-import { TermInput } from './components/TermInput'
+import { LandingPage } from './components/LandingPage'
 import { FlashcardSession } from './components/FlashcardSession'
 import './App.css'
 
@@ -8,12 +8,16 @@ function App() {
   const [view, setView] = useState('input')
   const [terms, setTerms] = useState([])
   const [cardColors, setCardColors] = useState([])
+  const [categoryTitle, setCategoryTitle] = useState('')
+  const [categoryDescription, setCategoryDescription] = useState('')
 
-  function handleStart(parsedTerms) {
+  function handleStart(parsedTerms, title, description) {
     const palette = CardColors.length > 0 ? CardColors : ['#D8D4BC']
     const colors = parsedTerms.map(() => palette[Math.floor(Math.random() * palette.length)])
     setTerms(parsedTerms)
     setCardColors(colors)
+    setCategoryTitle(title)
+    setCategoryDescription(description)
     setView('session')
   }
 
@@ -24,11 +28,9 @@ function App() {
   return (
     <div className="flashcard-app">
       {view === 'input' ? (
-        <TermInput
-          onStart={handleStart}
-        />
+        <LandingPage onStart={handleStart} />
       ) : (
-        <FlashcardSession terms={terms} cardColors={cardColors} onBack={handleBack} />
+        <FlashcardSession terms={terms} cardColors={cardColors} onBack={handleBack} title={categoryTitle} description={categoryDescription} />
       )}
     </div>
   )
