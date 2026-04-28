@@ -27,11 +27,6 @@ export function FlashcardSession({terms, cardColors, onBack}) {
         setCurrentIndex(0);
     }
 
-    function showVideo() {
-        const url = `https://www.signasl.org/sign/${localTerms[currentIndex]}`;
-        console.log("Grabbing: ", url);
-    }
-
     function getPlaybackUrl() {
         console.log("Entry: ", localTerms[currentIndex]);
         const term = localTerms[currentIndex].term;
@@ -94,8 +89,7 @@ export function FlashcardSession({terms, cardColors, onBack}) {
                         <button className="btn-nav" onClick={goPrev}>← Prev</button>
                         <button className="btn-nav" onClick={goNext}>Next →</button>
                         <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                        <button onClick={showVideo}>Show Video</button>
-                        <button className="btn-nav" onClick={() => setShowSelect(s => !s)}>Select</button>
+                        <button className="btn-nav" onClick={() => setShowSelect(s => !s)}>List</button>
                     </div>
                 </div>
                 {showSelect && (
