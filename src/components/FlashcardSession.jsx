@@ -6,6 +6,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localTerms, setLocalTerms] = useState(terms);
     const [localColors, setLocalColors] = useState(cardColors);
+    const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const selectRef = useRef(null);
 
     const goNext = useCallback(() => {
@@ -89,19 +90,29 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         <button className="btn-nav" onClick={goPrev}>← Prev</button>
                         <button className="btn-nav" onClick={goNext}>Next →</button>
                         <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
+                        <button className="btn-nav btn-nav--terms" onClick={() => setTermDrawerOpen(true)}>📋 Terms</button>
                     </div>
                 </div>
-                <select
-                    ref={selectRef}
-                    size={20}
-                    className="term-select"
-                    onChange={e => setCurrentIndex(Number(e.target.value))}
-                    value={currentIndex}
-                >
-                    {sortedTerms.map(({term, i}) => (
-                        <option key={i} value={i}>{term}</option>
-                    ))}
-                </select>
+                <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
+                    <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
+                    <div className="term-drawer__panel">
+                        <div className="term-drawer__header">
+                            <span>Select a Term</span>
+                            <button className="term-drawer__close" onClick={() => setTermDrawerOpen(false)}>✕</button>
+                        </div>
+                        <select
+                            ref={selectRef}
+                            size={20}
+                            className="term-select"
+                            onChange={e => { setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
+                            value={currentIndex}
+                        >
+                            {sortedTerms.map(({term, i}) => (
+                                <option key={i} value={i}>{term}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
     );
