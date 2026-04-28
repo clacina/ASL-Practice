@@ -1,0 +1,1 @@
+Adjust the contents of the app so it is responsive and will display well on phones and tablets. Ensure the video is always visible and hide the other controls as necessary. Shrink controls where possible but leave the video playback as the main feature.
