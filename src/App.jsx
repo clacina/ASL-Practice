@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { CardColors } from './data/card-colors'
 import { LandingPage } from './components/LandingPage'
 import { FlashcardSession } from './components/FlashcardSession'
+import { Footer } from './components/Footer'
 import './App.css'
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
       ) : (
         <FlashcardSession terms={terms} cardColors={cardColors} onBack={handleBack} title={categoryTitle} description={categoryDescription} />
       )}
+      <Footer />
     </div>
   )
 }
