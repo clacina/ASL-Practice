@@ -1,6 +1,6 @@
 ---
-description: Create a commit message by analyzing git diffs
-allowed-tools: Bash(git status:*), Bash(git diff --staged), Bash(git commit:*)
+description: Add any modified files and create a commit message by analyzing git diffs
+allowed-tools: Bash(git status:*), Bash(git diff --staged), Bash(git commit:*), Bash(git add:*)
 ---
 
 ## Context:
@@ -8,6 +8,7 @@ allowed-tools: Bash(git status:*), Bash(git diff --staged), Bash(git commit:*)
 - Current git status: !`git status`
 - Current git diff: !`git diff --staged`
 - ADD all modified and new files to git.  If you think there are files that should not be in version control, ask the user.  If you see files that you think should be bundled into separate commits, ask the user.
+- Abort on any untracked files.
 Analyze above staged git changes and create a commit message. Use present tense and explain "why" something has changed, not just "what" has changed.
 
 ## Commit types with emojis:
