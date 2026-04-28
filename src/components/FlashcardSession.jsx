@@ -1,24 +1,20 @@
-import {useState, useEffect, useCallback, useMemo} from "react";
+import {useState, useEffect, useCallback, useMemo, useRef} from "react";
 import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
 
-export function FlashcardSession({terms, cardColors, onBack}) {
+export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localTerms, setLocalTerms] = useState(terms);
     const [localColors, setLocalColors] = useState(cardColors);
-    const [showSelect, setShowSelect] = useState(false);
+    const selectRef = useRef(null);
 
     const goNext = useCallback(() => {
-        const newIndex = (currentIndex + 1) % localTerms.length;
-        console.log("New Index: ", newIndex);
-        setCurrentIndex(newIndex);
-    }, [currentIndex, localTerms.length]);
+        setCurrentIndex(i => (i + 1) % localTerms.length);
+    }, [localTerms.length]);
 
     const goPrev = useCallback(() => {
-        const newIndex = (currentIndex - 1 + localTerms.length) % localTerms.length;
-        console.log("New Index: ", newIndex);
-        setCurrentIndex(newIndex);
-    }, [currentIndex, localTerms.length]);
+        setCurrentIndex(i => (i - 1 + localTerms.length) % localTerms.length);
+    }, [localTerms.length]);
 
     function handleShuffle() {
         const indices = shuffle([...localTerms.keys()]);
@@ -28,27 +24,24 @@ export function FlashcardSession({terms, cardColors, onBack}) {
     }
 
     function getPlaybackUrl() {
-        console.log("Entry: ", localTerms[currentIndex]);
-        const term = localTerms[currentIndex].term;
-        const code = localTerms[currentIndex].code;
-        if (Object.prototype.hasOwnProperty.call(localTerms[currentIndex], "type")) {
-            switch (localTerms[currentIndex].type) {
+        const current = localTerms[currentIndex];
+        if (Object.prototype.hasOwnProperty.call(current, "type")) {
+            switch (current.type) {
                 case "spell":
-                    console.log("returning url: ", '/fingerspell/aslg.gif');
-                    return ('/fingerspell/aslg.gif');
+                    return '/fingerspell/aslg.gif';
                 default:
-                    console.error("Unknown term type: ", localTerms[currentIndex].type);
+                    console.error("Unknown term type: ", current.type);
             }
         }
-        if(localTerms[currentIndex].code.length === 0) {
-            return `https://media.signbsl.com/videos/asl/startasl/mp4/${term.toLowerCase()}.mp4`;
+        if (current.code.length === 0) {
+            return null;
         }
-        console.log("returning url: ", code);
-        return localTerms[currentIndex].code;
+        return current.code;
     }
 
     useEffect(() => {
         function handleKey(e) {
+            if (document.activeElement === selectRef.current) return;
             if (e.key === "ArrowRight") goNext();
             if (e.key === "ArrowLeft") goPrev();
         }
@@ -57,7 +50,6 @@ export function FlashcardSession({terms, cardColors, onBack}) {
         return () => window.removeEventListener("keydown", handleKey);
     }, [goNext, goPrev]);
 
-
     const sortedTerms = useMemo(
         () => localTerms.map((t, i) => ({term: t.term, i})).sort((a, b) => a.term.localeCompare(b.term)),
         [localTerms]
@@ -65,45 +57,55 @@ export function FlashcardSession({terms, cardColors, onBack}) {
 
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
+    const playbackUrl = getPlaybackUrl();
 
     return (
         <div className="flashcard-session">
-            <button className="btn-back" onClick={onBack}>
-                ← Back
-            </button>
+            <div className="flashcard-session-header">
+                <button className="btn-back" onClick={onBack}>
+                    ← Back
+                </button>
+                <div>
+                    <h1 className="flashcard-session-title">{title}</h1>
+                    <p className="flashcard-session-desc">{description}</p>
+                </div>
+            </div>
             <div className="flashcard-session-body">
                 <div className="flashcard-session-content">
                     <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
                         <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                     </div>
                     <div className="flashcard-video">
-                        <iframe
-                            width="560"
-                            height="315"
-                            title="ASL sign video"
-                            src={getPlaybackUrl()}
-                        ></iframe>
+                        {playbackUrl ? (
+                            <iframe
+                                className="flashcard-video-iframe"
+                                title="ASL sign video"
+                                src={playbackUrl}
+                            ></iframe>
+                        ) : (
+                            <div className="flashcard-video-placeholder">
+                                No video available
+                            </div>
+                        )}
                     </div>
                     <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
                     <div className="flashcard-nav">
                         <button className="btn-nav" onClick={goPrev}>← Prev</button>
                         <button className="btn-nav" onClick={goNext}>Next →</button>
                         <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                        <button className="btn-nav" onClick={() => setShowSelect(s => !s)}>List</button>
                     </div>
                 </div>
-                {showSelect && (
-                    <select
-                        size={20}
-                        className="term-select"
-                        onChange={e => setCurrentIndex(Number(e.target.value))}
-                        value={currentIndex}
-                    >
-                        {sortedTerms.map(({term, i}) => (
-                            <option key={i} value={i}>{term}</option>
-                        ))}
-                    </select>
-                )}
+                <select
+                    ref={selectRef}
+                    size={20}
+                    className="term-select"
+                    onChange={e => setCurrentIndex(Number(e.target.value))}
+                    value={currentIndex}
+                >
+                    {sortedTerms.map(({term, i}) => (
+                        <option key={i} value={i}>{term}</option>
+                    ))}
+                </select>
             </div>
         </div>
     );
