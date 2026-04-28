@@ -56,7 +56,7 @@
 
 .term-input__body {
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: start;
   flex-grow: 1;
@@ -69,9 +69,50 @@
 /* ── Category buttons ─────────────────────────────────── */
 
 .term-input__categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Resources panel ──────────────────────────────────── */
+
+.term-input__resources {
+  padding: 20px 24px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.term-input__resources-heading {
+  margin: 0 0 14px;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-h);
+  letter-spacing: 0.02em;
+}
+
+.term-input__resources-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 1.4;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .btn-category {
@@ -85,7 +126,16 @@
   font-weight: 600;
   text-align: left;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+
+  .btn-category__icon {
+    font-size: 20px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
 
   &:hover {
     background: var(--accent-bg);
@@ -191,8 +241,11 @@
 
 .flashcard-session-header {
   display: flex;
-  align-items: flex-start;
-  gap: 16px;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  width: 100%;
+  max-width: 560px;
 }
 
 .flashcard-session-title {
@@ -258,8 +311,8 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  max-width: 560px;
   border-radius: 16px;
-  padding: 24px 32px;
   box-sizing: border-box;
   text-align: center;
   transition: background-color 0.25s ease;
@@ -271,7 +324,7 @@
   letter-spacing: -0.02em;
   overflow-wrap: break-word;
   word-break: break-word;
-  line-height: 1.6;
+  line-height: 1;
   /*overflow: hidden;*/
   max-height: 100%;
 }

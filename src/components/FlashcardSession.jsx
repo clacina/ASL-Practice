@@ -61,17 +61,13 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
 
     return (
         <div className="flashcard-session">
-            <div className="flashcard-session-header">
-                <button className="btn-back" onClick={onBack}>
-                    ← Back
-                </button>
-                <div>
-                    <h1 className="flashcard-session-title">{title}</h1>
-                    <p className="flashcard-session-desc">{description}</p>
-                </div>
-            </div>
+            <button className="btn-back" onClick={onBack}>← Back</button>
             <div className="flashcard-session-body">
                 <div className="flashcard-session-content">
+                    <div className="flashcard-session-header">
+                        <h1 className="flashcard-session-title">{title}</h1>
+                        <p className="flashcard-session-desc">{description}</p>
+                    </div>
                     <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
                         <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                     </div>

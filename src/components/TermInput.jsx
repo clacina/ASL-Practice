@@ -1,4 +1,6 @@
 import {useState, useEffect} from "react";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 import terms from "../data/terms.json" with {type: "json"};
 import other_terms from "../data/terms2.json" with {type: "json"};
@@ -7,13 +9,13 @@ import verbs from "../data/verbs.json" with {type: "json"};
 import axios from "axios";
 
 const CATEGORIES = [
-    {title: "Finger Spelling", description: "Practice spelling words letter by letter using ASL handshapes.", terms: terms},
-    {title: "Numbers", description: "Learn to sign numbers in American Sign Language.", terms: terms},
-    {title: "ASL Level I && II Class Terms", description: "Core vocabulary from ASL Level I and II coursework.", terms: terms},
-    {title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
-    {title: "Verbs", description: "Common action words and verbs in American Sign Language.", terms: verbs},
-    {title: "Other Terms", description: "Additional vocabulary terms for expanding your ASL knowledge.", terms: other_terms},
-    {title: "Renaissance Faire Terms", description: "Specialized vocabulary for Renaissance Faire settings.", terms: terms},
+    {icon: "🖐️", title: "Finger Spelling", description: "Practice spelling words letter by letter using ASL handshapes.", terms: terms},
+    {icon: "🔢", title: "Numbers", description: "Learn to sign numbers in American Sign Language.", terms: terms},
+    {icon: "📚", title: "ASL Level I && II Class Terms", description: "Core vocabulary from ASL Level I and II coursework.", terms: terms},
+    {icon: "❓", title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
+    {icon: "⚡", title: "Verbs", description: "Common action words and verbs in American Sign Language.", terms: verbs},
+    {icon: "🗂️", title: "Other Terms", description: "Additional vocabulary terms for expanding your ASL knowledge.", terms: other_terms},
+    {icon: "⚔️", title: "Renaissance Faire Terms", description: "Specialized vocabulary for Renaissance Faire settings.", terms: terms},
 ];
 
 const webResources = [
@@ -78,11 +80,26 @@ export function TermInput({onStart}) {
             <div className="term-input__body">
                 <div className="term-input__categories">
                     {CATEGORIES.map(category => (
-                        <button key={category.title} className="btn-category" onClick={() => handleStart(category)}>
-                            {category.title}
-                        </button>
+                        <Tippy key={category.title} content={category.description} placement="top">
+                            <button className="btn-category" onClick={() => handleStart(category)}>
+                                <span className="btn-category__icon" aria-hidden="true">{category.icon}</span>
+                                {category.title}
+                            </button>
+                        </Tippy>
                     ))}
                     {error && <p className="error-message">{error}</p>}
+                </div>
+                <div className="term-input__resources">
+                    <h3 className="term-input__resources-heading">ASL Resources</h3>
+                    <ul className="term-input__resources-list">
+                        {webResources.map(resource => (
+                            <li key={resource.url}>
+                                <a href={resource.url} target="_blank" rel="noopener noreferrer">
+                                    {resource.description}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </div>
         </div>
