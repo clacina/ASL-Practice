@@ -1,7 +1,7 @@
 [
     {"term": "Who", "code": ""},
-    {"term": "Which", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/ivWficO0urg.mp4"},
-    {"term": "Where", "code": ""},
+    {"term": "Which", "code": "https://www.youtube.com/embed/wyP-Xcu2p2A?rel=0;autoplay=1"},
+    {"term": "Where", "code": "https://www.youtube.com/embed/4T2BfSwTIl8?rel=0;autoplay=1"},
     {"term": "Why", "code": ""},
     {"term": "Ask You", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/need.mp4"},
     {"term": "Ask Me", "code": "https://media.signbsl.com/videos/asl/aslbricks/mp4/question.mp4"},
@@ -14,6 +14,14 @@
     {"term": "Help", "code": ""},
     {"term": "How", "code": ""},
     {"term": "Again", "code": ""},
-    {"term": "Calendar", "code": ""}
+    {"term": "Calendar", "code": ""},
+    {"term": "Do you need help?", "code": "https://www.youtube.com/embed/HDwqcA11tx4?rel=0;autoplay=1"},
+    {"term": "Do you understand?", "code": "https://www.youtube.com/embed/plJHFy1RcMI?rel=0;autoplay=1"},
+    {"term": "Do you want to play a game?", "code": "https://www.youtube.com/embed/aRxUSAA_k2w?rel=0;autoplay=1"},
+    {"term": "How are you?", "code": "https://www.youtube.com/embed/JPtdvzvpWMQ?rel=0;autoplay=1"},
+    {"term": "How did you get here?", "code": "https://www.youtube.com/embed/8Gl6aTI1zAQ?rel=0;autoplay=1"},
+    {"term": "How many siblings do you have?", "code": "https://www.youtube.com/embed/gPjmZURJgWg?rel=0;autoplay=1"},
+    {"term": "How much does it cost?", "code": "https://www.youtube.com/embed/wPwZpfA397c?rel=0;autoplay=1"},
+    {"term": "How old are you?", "code": "https://www.youtube.com/embed/yQD5HyEyWkI?rel=0;autoplay=1"}
 ]
 

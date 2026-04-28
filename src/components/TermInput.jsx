@@ -3,16 +3,8 @@ import {useState, useEffect} from "react";
 import terms from "../data/terms.json" with {type: "json"};
 import other_terms from "../data/terms2.json" with {type: "json"};
 import questions from "../data/questions.json" with {type: "json"};
+import verbs from "../data/verbs.json" with {type: "json"};
 import axios from "axios";
-
-
-const CAROUSEL_ITEMS = [
-    {term: "grandfather", url: "https://media.signasl.com/videos/asl/startasl/img/grandfather.jpg"},
-    {term: "father", url: "https://media.signbsl.com/videos/asl/startasl/mp4/brother.jpg"},
-    {term: "mother", url: "https://media.signasl.com/videos/asl/startasl/img/mother.jpg"},
-    {term: "friend", url: "https://media.signasl.com/videos/asl/startasl/img/friend.jpg"},
-    {term: "family", url: "https://media.signasl.com/videos/asl/startasl/img/family.jpg"},
-];
 
 const CATEGORIES = [
     {title: "Spelling", terms: terms},
@@ -20,13 +12,20 @@ const CATEGORIES = [
     {title: "Class Terms", terms: terms},
     {title: "Other Terms", terms: other_terms},
     {title: "Faire Terms", terms: terms},
-    {title: "Term Selection", terms: [...terms, ...other_terms]},
     {title: "Questions", terms: questions},
+    {title: "Verbs", terms: verbs}
+];
+
+const webResources = [
+    {url: "https://www.signasl.org/", description: "Sign ASL - American Sign Language Dictionary", type: ""},
+    {url: "https://www.handspeak.com/", description: "Hand Speak", type: ""},
+    {url: "https://www.lifeprint.com/", description: "ASL University", type: ""},
+    {url: "https://www.startasl.com/asl-dictionary/", description: "Free dictionary on Paid site with Phrases.", type: ""},
+    {url: "https://asl.ms/", description: "ASL Finger Spell Comprehension Test", type: ""},
 ];
 
 export function TermInput({onStart}) {
     const [error, setError] = useState("");
-    const [carouselIndex, setCarouselIndex] = useState(0);
     const [wordlist, setWordlist] = useState([]);
     const [numberList, setNumberList] = useState([]);
 
@@ -58,11 +57,6 @@ export function TermInput({onStart}) {
             });
             setNumberList(numberData);
         });
-
-        const id = setInterval(() => {
-            setCarouselIndex(i => (i + 1) % CAROUSEL_ITEMS.length);
-        }, 3000);
-        return () => clearInterval(id);
     }, []);
 
     useEffect(() => {
@@ -79,17 +73,6 @@ export function TermInput({onStart}) {
         setError("");
         onStart(terms);
     }
-
-    function prevSlide() {
-        setCarouselIndex(i => (i - 1 + CAROUSEL_ITEMS.length) % CAROUSEL_ITEMS.length);
-    }
-
-    function nextSlide() {
-        setCarouselIndex(i => (i + 1) % CAROUSEL_ITEMS.length);
-    }
-
-    const {url, term} = CAROUSEL_ITEMS[carouselIndex];
-
     return (
         <div className="term-input">
             <h1 className="term-input__title">ASL Flashcards</h1>
@@ -102,34 +85,6 @@ export function TermInput({onStart}) {
                         </button>
                     ))}
                     {error && <p className="error-message">{error}</p>}
-                </div>
-
-                <div className="term-input__carousel">
-                    <div className="carousel-stage">
-                        <button className="carousel-arrow carousel-arrow--prev" onClick={prevSlide}
-                                aria-label="Previous">‹
-                        </button>
-                        <img
-                            key={url}
-                            src={url}
-                            alt={`ASL sign for ${term}`}
-                            className="carousel-img"
-                        />
-                        <button className="carousel-arrow carousel-arrow--next" onClick={nextSlide}
-                                aria-label="Next">›
-                        </button>
-                    </div>
-                    <div className="carousel-dots">
-                        {CAROUSEL_ITEMS.map((_, i) => (
-                            <button
-                                key={i}
-                                className={`carousel-dot${i === carouselIndex ? " carousel-dot--active" : ""}`}
-                                onClick={() => setCarouselIndex(i)}
-                                aria-label={`Slide ${i + 1}`}
-                            />
-                        ))}
-                    </div>
-                    <p className="carousel-caption">{term}</p>
                 </div>
             </div>
         </div>

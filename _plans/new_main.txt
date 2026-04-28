@@ -1,0 +1,4 @@
+Redesign the main page as follows:
+1. Layout should have a header row with title and a description to be provided.
+2. Provide a section to list web resources from the webResources list.
+3. Provide a set of options that navigate to different sets of terms, one for each entry in CATEGORIES.
