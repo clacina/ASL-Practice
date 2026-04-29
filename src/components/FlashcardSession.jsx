@@ -1,6 +1,8 @@
 import {useState, useEffect, useCallback, useMemo, useRef} from "react";
 import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
+import ReactPlayer from 'react-player'
+import toast from "react-hot-toast";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,7 +37,10 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
             }
         }
         if (current.code.length === 0) {
-            return null;
+            const base_url = "https://media.signbsl.com/videos/asl/startasl/mp4/";
+            const term_url = (base_url + current.term + ".mp4").toLowerCase()
+            console.log("Looking for term url: ", term_url);
+            return term_url;
         }
         return current.code;
     }
@@ -52,13 +57,19 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     }, [goNext, goPrev]);
 
     const sortedTerms = useMemo(
-        () => localTerms.map((t, i) => ({term: t.term, i})).sort((a, b) => a.term.localeCompare(b.term)),
+        () => localTerms.map((t, i) => ({term: t.term, i, fix: t.fix, code: t.code})).sort((a, b) => a.term.localeCompare(b.term)),
         [localTerms]
     );
+
+    function playbackError(event) {
+        console.log("Playback error", event);
+        toast.error("Playback error");
+    }
 
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
+    console.log(sortedTerms);
 
     return (
         <div className="flashcard-session">
@@ -74,11 +85,16 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                     </div>
                     <div className="flashcard-video">
                         {playbackUrl ? (
-                            <iframe
+                            <ReactPlayer
                                 className="flashcard-video-iframe"
                                 title="ASL sign video"
                                 src={playbackUrl}
-                            ></iframe>
+                                // autoPlay={true}
+                                controls={true}
+                                width="100%"
+                                height="100%"
+                                onError={playbackError}
+                            ></ReactPlayer>
                         ) : (
                             <div className="flashcard-video-placeholder">
                                 No video available
@@ -107,8 +123,10 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             onChange={e => { setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
                             value={currentIndex}
                         >
-                            {sortedTerms.map(({term, i}) => (
-                                <option key={i} value={i}>{term}</option>
+                            {sortedTerms.map(({term, i, fix}) => (
+                                <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
+                                    {fix ? `[fix] ${term}` : term}
+                                </option>
                             ))}
                         </select>
                     </div>

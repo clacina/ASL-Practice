@@ -4,6 +4,7 @@ import { LandingPage } from './components/LandingPage'
 import { FlashcardSession } from './components/FlashcardSession'
 import { Footer } from './components/Footer'
 import './App.css'
+import {Toaster} from "react-hot-toast";
 
 function App() {
   const [view, setView] = useState('input')
@@ -34,6 +35,7 @@ function App() {
         <FlashcardSession terms={terms} cardColors={cardColors} onBack={handleBack} title={categoryTitle} description={categoryDescription} />
       )}
       <Footer />
+      <Toaster />
     </div>
   )
 }

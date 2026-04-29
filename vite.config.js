@@ -8,4 +8,13 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
   },
-})
+  server: {
+    proxy: {
+      '/api-video': {
+        target: 'https://media.signbsl.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-video/, '')
+      }
+    }
+  }
+});
