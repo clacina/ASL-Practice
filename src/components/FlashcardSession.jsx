@@ -57,7 +57,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     }, [goNext, goPrev]);
 
     const sortedTerms = useMemo(
-        () => localTerms.map((t, i) => ({term: t.term, i})).sort((a, b) => a.term.localeCompare(b.term)),
+        () => localTerms.map((t, i) => ({term: t.term, i, fix: t.fix, code: t.code})).sort((a, b) => a.term.localeCompare(b.term)),
         [localTerms]
     );
 
@@ -69,6 +69,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
+    console.log(sortedTerms);
 
     return (
         <div className="flashcard-session">

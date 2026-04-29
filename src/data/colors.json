@@ -5,6 +5,9 @@
     {"term": "White", "code": ""},
     {"term": "Gray", "code": ""},
     {"term": "Purple", "code": ""},
-    {"term": "Black", "code": ""}
+    {"term": "Black", "code": ""},
+    {"term": "Red", "code": ""},
+    {"term": "Blue", "code": ""},
+    {"term": "Brown", "code": ""},
+    {"term": "Pink", "code": ""}
 ]
-

@@ -8,6 +8,7 @@ import questions from "../data/questions.json" with {type: "json"};
 import verbs from "../data/verbs.json" with {type: "json"};
 import date_time_terms from "../data/calendar-terms.json";
 import color_terms from "../data/colors.json";
+import faire_terms from "../data/faire.json";
 import axios from "axios";
 
 const CATEGORIES = [
@@ -17,7 +18,7 @@ const CATEGORIES = [
     {icon: "❓", title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
     {icon: "⚡", title: "Verbs", description: "Common action words and verbs in American Sign Language.", terms: verbs},
     {icon: "🗂️", title: "Other Terms", description: "Additional vocabulary terms for expanding your ASL knowledge.", terms: other_terms},
-    {icon: "⚔️", title: "Renaissance Faire Terms", description: "Specialized vocabulary for Renaissance Faire settings.", terms: terms},
+    {icon: "⚔️", title: "Renaissance Faire Terms", description: "Specialized vocabulary for Renaissance Faire settings.", terms: faire_terms},
     {icon: "📆", title: "Calendar / Date & Time", description: "Months, Days, Time, etc.", terms: date_time_terms},
     {icon: "🎨", title: "Colors", description: "Various Colors", terms: color_terms},
 ];
