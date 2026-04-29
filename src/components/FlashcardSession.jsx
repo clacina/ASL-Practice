@@ -123,8 +123,10 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             onChange={e => { setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
                             value={currentIndex}
                         >
-                            {sortedTerms.map(({term, i}) => (
-                                <option key={i} value={i}>{term}</option>
+                            {sortedTerms.map(({term, i, fix}) => (
+                                <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
+                                    {fix ? `[fix] ${term}` : term}
+                                </option>
                             ))}
                         </select>
                     </div>

@@ -559,6 +559,10 @@
   }
 }
 
+.term-option--needs-fix {
+  color: var(--color-needs-fix);
+}
+
 /* ── Mobile responsive overrides ─────────────────────── */
 
 @media (max-width: 640px) {
