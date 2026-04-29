@@ -3,11 +3,12 @@ import { CardColors } from './data/card-colors'
 import { LandingPage } from './components/LandingPage'
 import { FlashcardSession } from './components/FlashcardSession'
 import { Footer } from './components/Footer'
+import { PassphrasePage } from './components/PassphrasePage'
 import './App.css'
 import {Toaster} from "react-hot-toast";
 
 function App() {
-  const [view, setView] = useState('input')
+  const [view, setView] = useState(() => sessionStorage.getItem('asl-unlocked') ? 'input' : 'gate')
   const [terms, setTerms] = useState([])
   const [cardColors, setCardColors] = useState([])
   const [categoryTitle, setCategoryTitle] = useState('')
@@ -25,6 +26,15 @@ function App() {
 
   function handleBack() {
     setView('input')
+  }
+
+  function handleUnlock() {
+    sessionStorage.setItem('asl-unlocked', '1')
+    setView('input')
+  }
+
+  if (view === 'gate') {
+    return <PassphrasePage onUnlock={handleUnlock} />
   }
 
   return (
