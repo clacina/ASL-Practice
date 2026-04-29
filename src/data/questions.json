@@ -14,7 +14,6 @@
     {"term": "Help", "code": ""},
     {"term": "How", "code": ""},
     {"term": "Again", "code": ""},
-    {"term": "Calendar", "code": ""},
     {"term": "Do you need help?", "code": "https://www.youtube.com/embed/HDwqcA11tx4?rel=0;autoplay=1"},
     {"term": "Do you understand?", "code": "https://www.youtube.com/embed/plJHFy1RcMI?rel=0;autoplay=1"},
     {"term": "Do you want to play a game?", "code": "https://www.youtube.com/embed/aRxUSAA_k2w?rel=0;autoplay=1"},
