@@ -61,15 +61,16 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         [localTerms]
     );
 
-    function playbackError(event) {
-        console.log("Playback error", event);
+    function playbackError(error) {
+        console.error(error);
+        console.log("Playback error", error.nativeEvent.target.error);
+        console.log("Source: ", error.nativeEvent.target.src)
         toast.error("Playback error");
     }
 
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
-    console.log(sortedTerms);
 
     return (
         <div className="flashcard-session">
@@ -89,8 +90,9 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 className="flashcard-video-iframe"
                                 title="ASL sign video"
                                 src={playbackUrl}
-                                // autoPlay={true}
+                                autoPlay={true}
                                 controls={true}
+                                muted={true}
                                 width="100%"
                                 height="100%"
                                 onError={playbackError}
