@@ -1,18 +1,34 @@
+import {useState, useEffect, useRef} from "react";
+import {DisclaimerModal} from "./DisclaimerModal";
+
 export function Footer() {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef(null);
+
+  function handleClose() {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }
+
+  useEffect(() => {
+    document.body.classList.toggle('modal-open', isOpen);
+    return () => document.body.classList.remove('modal-open');
+  }, [isOpen]);
+
   return (
     <footer className="site-footer">
       <p className="site-footer__icon">
         <span aria-label="ASL hand sign">🤟</span> ASL Flashcards
       </p>
-      <details className="site-footer__disclaimer">
-        <summary>Disclaimer</summary>
-        <ul>
-          <li>This site is not for professional use and is only for helping study ASL.</li>
-          <li>Uses public domain videos that are not owned by this creator.</li>
-          <li>Does not promise that the signs provided are the most recent versions of ASL.</li>
-          <li>Attempts to restrict signs to ASL vs other sign languages (BSL, etc.).</li>
-        </ul>
-      </details>
+      <button
+        ref={triggerRef}
+        className="site-footer__disclaimer-btn"
+        onClick={() => setIsOpen(true)}
+      >
+        Disclaimer
+      </button>
+
+      {isOpen && <DisclaimerModal onClose={handleClose} />}
     </footer>
-  )
+  );
 }

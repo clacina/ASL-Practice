@@ -33,17 +33,16 @@ function checkData() {
             needs_fixing.push(term);
         }
     })
-    console.log(terms_names);
+    console.log(`Found ${terms_names.length} terms.`);
     console.log("-----------")
     fixable_terms.forEach(term => {
-        console.log(terms_names.indexOf(term.term));
+        // console.log(terms_names.indexOf(term.term));
         const ndx = terms_names.indexOf(term.term);
         if(ndx === -1) {
-            console.log("Include Term: ", term.term);
+            console.log("Need to fix term: ", term.term);
         } else {
             duplicates.push(term);
         }
-
     })
 
     console.log("Total Unique Terms: ", terms_names.length);
