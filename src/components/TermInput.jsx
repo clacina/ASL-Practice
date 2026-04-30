@@ -11,9 +11,9 @@ import color_terms from "../data/colors.json";
 import faire_terms from "../data/faire.json";
 import axios from "axios";
 
+const DEVELOPMENT = false;
+
 const CATEGORIES = [
-    {icon: "🖐️", title: "Finger Spelling", description: "Practice spelling words letter by letter using ASL handshapes.", terms: terms},
-    {icon: "🔢", title: "Numbers", description: "Learn to sign numbers in American Sign Language.", terms: terms},
     {icon: "📚", title: "ASL Level I & II Class Terms", description: "Core vocabulary from ASL Level I and II coursework.", terms: terms},
     {icon: "❓", title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
     {icon: "⚡", title: "Verbs", description: "Common action words and verbs in American Sign Language.", terms: verbs},
@@ -22,6 +22,21 @@ const CATEGORIES = [
     {icon: "📆", title: "Calendar / Date & Time", description: "Months, Days, Time, etc.", terms: date_time_terms},
     {icon: "🎨", title: "Colors", description: "Various Colors", terms: color_terms},
 ];
+
+if (DEVELOPMENT) {
+    CATEGORIES.splice(0, 0, {
+        icon: "🖐️",
+        title: "Finger Spelling",
+        description: "Practice spelling words letter by letter using ASL handshapes.",
+        terms: terms
+    });
+    CATEGORIES.splice(0, 0, {
+        icon: "🔢",
+        title: "Numbers",
+        description: "Learn to sign numbers in American Sign Language.",
+        terms: terms
+    });
+}
 
 const webResources = [
     {url: "https://www.signasl.org/", description: "Sign ASL - American Sign Language Dictionary", type: ""},
@@ -37,38 +52,42 @@ export function TermInput({onStart}) {
     const [numberList, setNumberList] = useState([]);
 
     useEffect(() => {
-        // load random words
-        const randomWordsUrl = "https://random-word-api.herokuapp.com/word?number=45";
-        axios.get(randomWordsUrl).then((response) => {
-            const wordData = [];
-            response.data.forEach(element => {
-                const entry = {
-                    "term": element,
-                    "code": "",
-                    "type": "spell"
-                };
-                wordData.push(entry);
+        if (DEVELOPMENT) {
+            // load random words
+            const randomWordsUrl = "https://random-word-api.herokuapp.com/word?number=45";
+            axios.get(randomWordsUrl).then((response) => {
+                const wordData = [];
+                response.data.forEach(element => {
+                    const entry = {
+                        "term": element,
+                        "code": "",
+                        "type": "spell"
+                    };
+                    wordData.push(entry);
+                });
+                setWordlist(wordData);
             });
-            setWordlist(wordData);
-        });
 
-        const randomNumbersUrl = "https://api.codetabs.com/v1/random/integer?min=1&max=9999&times=45";
-        axios.get(randomNumbersUrl).then((response) => {
-            const numberData = [];
-            response.data.data.forEach(element => {
-                const entry = {
-                    "term": element.toString(),
-                    "code": ""
-                };
-                numberData.push(entry);
+            const randomNumbersUrl = "https://api.codetabs.com/v1/random/integer?min=1&max=9999&times=45";
+            axios.get(randomNumbersUrl).then((response) => {
+                const numberData = [];
+                response.data.data.forEach(element => {
+                    const entry = {
+                        "term": element.toString(),
+                        "code": ""
+                    };
+                    numberData.push(entry);
+                });
+                setNumberList(numberData);
             });
-            setNumberList(numberData);
-        });
+        }
     }, []);
 
     useEffect(() => {
-        CATEGORIES.find((category) => category.title === "Numbers").terms = numberList;
-        CATEGORIES.find((category) => category.title === "Finger Spelling").terms = wordlist;
+        if (DEVELOPMENT) {
+            CATEGORIES.find((category) => category.title === "Numbers").terms = numberList;
+            CATEGORIES.find((category) => category.title === "Finger Spelling").terms = wordlist;
+        }
     }, [wordlist, numberList]);
 
     function handleStart(category) {

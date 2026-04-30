@@ -607,6 +607,75 @@
   }
 }
 
+/* ── Mobile landscape 3-column layout ────────────────── */
+
+.fcs-landscape {
+  display: grid;
+  grid-template-columns: 120px 1fr 140px;
+  gap: 8px;
+  flex-grow: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.fcs-landscape__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+}
+
+.fcs-landscape__controls .flashcard-card {
+  flex: 1 1 0;
+  min-height: 40px;
+  max-width: 100%;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.fcs-landscape__controls .flashcard-term {
+  font-size: clamp(14px, 3vw, 24px);
+}
+
+.fcs-landscape__video {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+}
+
+.fcs-landscape__video .flashcard-video {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: unset;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.fcs-landscape__termlist {
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fcs-landscape__termlist .term-select {
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+.fcs-landscape__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fcs-landscape__nav .btn-nav {
+  padding: 6px 10px;
+  font-size: 13px;
+  width: 100%;
+}
+
 /* ── App banner ───────────────────────────────────────── */
 
 .app-banner {

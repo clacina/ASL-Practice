@@ -9,7 +9,23 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [localTerms, setLocalTerms] = useState(terms);
     const [localColors, setLocalColors] = useState(cardColors);
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
+    const [isMobileHorizontal, setIsMobileHorizontal] = useState(false);
     const selectRef = useRef(null);
+
+    useEffect(() => {
+        function check() {
+            setIsMobileHorizontal(
+                window.innerWidth < 1024 && window.matchMedia('(orientation: landscape)').matches
+            );
+        }
+        check();
+        window.addEventListener('resize', check);
+        window.addEventListener('orientationchange', check);
+        return () => {
+            window.removeEventListener('resize', check);
+            window.removeEventListener('orientationchange', check);
+        };
+    }, []);
 
     const goNext = useCallback(() => {
         setCurrentIndex(i => (i + 1) % localTerms.length);
@@ -71,6 +87,63 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
+
+    if (isMobileHorizontal) {
+        return (
+            <div className="flashcard-session">
+                <div className="fcs-landscape">
+                    <div className="fcs-landscape__controls">
+                        <button className="btn-back" onClick={onBack}>← Back</button>
+                        <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
+                            <span className="flashcard-term">{localTerms[currentIndex].term}</span>
+                        </div>
+                        <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
+                        <div className="flashcard-nav fcs-landscape__nav">
+                            <button className="btn-nav" onClick={goPrev}>← Prev</button>
+                            <button className="btn-nav" onClick={goNext}>Next →</button>
+                            <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
+                        </div>
+                    </div>
+                    <div className="fcs-landscape__video">
+                        <div className="flashcard-video">
+                            {playbackUrl ? (
+                                <ReactPlayer
+                                    className="flashcard-video-iframe"
+                                    title="ASL sign video"
+                                    src={playbackUrl}
+                                    autoPlay={true}
+                                    controls={true}
+                                    muted={true}
+                                    width="100%"
+                                    height="100%"
+                                    onError={playbackError}
+                                />
+                            ) : (
+                                <div className="flashcard-video-placeholder">
+                                    No video available
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="fcs-landscape__termlist">
+                        <select
+                            ref={selectRef}
+                            size={20}
+                            className="term-select"
+                            onChange={e => setCurrentIndex(Number(e.target.value))}
+                            value={currentIndex}
+                        >
+                            {sortedTerms.map(({term, i, fix}) => (
+                                <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
+                                    {fix ? `[fix] ${term}` : term}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flashcard-session">
