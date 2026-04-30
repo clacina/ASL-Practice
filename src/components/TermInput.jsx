@@ -45,6 +45,7 @@ const webResources = [
     {url: "https://www.startasl.com/asl-dictionary/", description: "Free dictionary on Paid site with Phrases.", type: ""},
     {url: "https://asl.ms/", description: "ASL Finger Spell Comprehension Test", type: ""},
     {url: "https://www.signingsavvy.com/", description: "Sign Savvy", type: ""},
+    {url: "https://en.wikipedia.org/wiki/American_Sign_Language", description: "Wikipedia", type: ""},
 ];
 
 export function TermInput({onStart}) {
