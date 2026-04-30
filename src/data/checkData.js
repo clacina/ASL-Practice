@@ -24,7 +24,7 @@ function checkData() {
 
     all_terms.forEach(term => {
         const ndx = terms_names.indexOf(term.term);
-        if(!terms_names.includes(term.term)) {
+        if(ndx === -1) {
             terms_names.push(term.term);
         } else {
             duplicates.push(term);
@@ -50,6 +50,7 @@ function checkData() {
     console.log("Duplicates Count: ", duplicates.length);
     console.log("Terms Need Repair: ", needs_fixing.length);
     // console.log(duplicates);
+    console.log(needs_fixing);
 }
 
 checkData();

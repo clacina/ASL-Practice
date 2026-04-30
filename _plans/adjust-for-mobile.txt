@@ -1,1 +1,1 @@
-Adjust the contents of the app so it is responsive and will display well on phones and tablets. Ensure the video is always visible and hide the other controls as necessary. Shrink controls where possible but leave the video playback as the main feature.
+Adjust the layout for mobile use.  When the screen width is less than 1024 and in horizontal orientation, remove the flashcard-session-header div and switch to 3 column display; controls, video, term list
