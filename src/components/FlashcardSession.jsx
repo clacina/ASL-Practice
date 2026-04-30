@@ -17,7 +17,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     useEffect(() => {
         function check() {
             setIsMobileHorizontal(
-                window.innerWidth < 1024 && window.matchMedia('(orientation: landscape)').matches
+                window.innerWidth < 1424 && window.matchMedia('(orientation: landscape)').matches
             );
         }
         check();
