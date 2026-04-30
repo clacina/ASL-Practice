@@ -104,15 +104,19 @@ describe('FlashcardSession', () => {
         expect(screen.getByRole('listbox').value).toBe('1');
     });
 
-    it('shows a placeholder when a term has an empty code field', () => {
+    it('constructs a fallback URL when code is empty', () => {
         renderSession([{term: 'NoVideo', code: ''}], ['#F6C992']);
-        expect(screen.getByText('No video available')).toBeInTheDocument();
-        expect(screen.queryByTitle('ASL sign video')).not.toBeInTheDocument();
+        const video = document.querySelector('.flashcard-video-iframe');
+        expect(video).toBeInTheDocument();
+        expect(video.src).toMatch(/novideo\.mp4$/i);
+        expect(screen.queryByText('No video available')).not.toBeInTheDocument();
     });
 
-    it('shows an iframe when a term has a non-empty code field', () => {
+    it('uses the provided URL when code is non-empty', () => {
         renderSession([{term: 'HasVideo', code: 'https://example.com/video.mp4'}], ['#F6C992']);
-        expect(screen.getByTitle('ASL sign video')).toBeInTheDocument();
+        const video = document.querySelector('.flashcard-video-iframe');
+        expect(video).toBeInTheDocument();
+        expect(video.src).toBe('https://example.com/video.mp4');
         expect(screen.queryByText('No video available')).not.toBeInTheDocument();
     });
 

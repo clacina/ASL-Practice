@@ -49,7 +49,7 @@ function checkData() {
     console.log("Duplicates Count: ", duplicates.length);
     console.log("Terms Need Repair: ", needs_fixing.length);
     // console.log(duplicates);
-    // console.log(needs_fixing);
+    console.log(needs_fixing);
 }
 
 checkData();
