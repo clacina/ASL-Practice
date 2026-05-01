@@ -1,9 +1,9 @@
 import {useState, useEffect, useCallback, useMemo, useRef} from "react";
 import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
-import ReactPlayer from 'react-player'
 import toast from "react-hot-toast";
 import {FlashcardNav} from "./FlashcardNav";
+import {FlashcardPlayer} from "./FlashcardPlayer";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -156,39 +156,18 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         />
                     </div>
                     <div className="fcs-landscape__video">
-                        <div className="flashcard-video">
-                            {playbackUrl ? (
-                                <ReactPlayer
-                                    className="flashcard-video-iframe"
-                                    title="ASL sign video"
-                                    src={playbackUrl}
-                                    playing={playing}
-                                    loop={repeat}
-                                    autoPlay={autoPlay}
-                                    controls={showPlayerControls}
-                                    playsinline={true}
-                                    muted={true}
-                                    width="100%"
-                                    height="100%"
-                                    playbackRate={playbackRate}
-                                    onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
-                                    onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
-                                    onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
-                                    onError={playbackError}
-                                    config={{
-                                        file: {
-                                            attributes: {
-                                                playsinline: true
-                                            }
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <div className="flashcard-video-placeholder">
-                                    No video available
-                                </div>
-                            )}
-                        </div>
+                        <FlashcardPlayer
+                            url={playbackUrl}
+                            playing={playing}
+                            loop={repeat}
+                            autoPlay={autoPlay}
+                            controls={showPlayerControls}
+                            playbackRate={playbackRate}
+                            onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                            onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                            onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
+                            onError={playbackError}
+                        />
                     </div>
                     <div className="fcs-landscape__termlist">
                         <select
@@ -222,38 +201,18 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                     <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
                         <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                     </div>
-                    <div className="flashcard-video">
-                        {playbackUrl ? (
-                            <ReactPlayer
-                                className="flashcard-video-iframe"
-                                title="ASL sign video"
-                                src={playbackUrl}
-                                playing={playing}
-                                playbackRate={playbackRate}
-                                playsinline={true}
-                                autoPlay={autoPlay}
-                                controls={showPlayerControls}
-                                muted={true}
-                                width="100%"
-                                height="100%"
-                                onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
-                                onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
-                                onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
-                                onError={playbackError}
-                                config={{
-                                    file: {
-                                        attributes: {
-                                            playsinline: true
-                                        }
-                                    }
-                                }}
-                            ></ReactPlayer>
-                        ) : (
-                            <div className="flashcard-video-placeholder">
-                                No video available
-                            </div>
-                        )}
-                    </div>
+                    <FlashcardPlayer
+                        url={playbackUrl}
+                        playing={playing}
+                        loop={repeat}
+                        autoPlay={autoPlay}
+                        controls={showPlayerControls}
+                        playbackRate={playbackRate}
+                        onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                        onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                        onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
+                        onError={playbackError}
+                    />
                     <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
                     <FlashcardNav
                         onPrev={goPrev}
