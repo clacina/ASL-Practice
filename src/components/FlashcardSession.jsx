@@ -3,7 +3,7 @@ import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
 import ReactPlayer from 'react-player'
 import toast from "react-hot-toast";
-import Tippy from "@tippyjs/react";
+import {FlashcardNav} from "./FlashcardNav";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -15,6 +15,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [showPlayerControls, setShowPlayerControls] = useState(true);
     const [playing, setPlaying] = useState(false);
     const [playbackRate, setPlaybackRate] = useState(1);
+    const [repeat, setRepeat] = useState(false);
     const selectRef = useRef(null);
 
     useEffect(() => {
@@ -92,6 +93,35 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         toast.error("Playback error");
     }
 
+    const PLAYBACK_STATE_START = 1
+    const PLAYBACK_STATE_END = 2
+    const PLAYBACK_STATE_PAUSE = 3
+
+    function playingStateChanged(stateChange) {
+        switch(stateChange) {
+            case PLAYBACK_STATE_START:
+                console.log("Playback start");
+                setPlaying(true);
+                break;
+            case PLAYBACK_STATE_END:
+                console.log("Playback end: ", repeat);
+                setPlaying(false);
+                break;
+            case PLAYBACK_STATE_PAUSE:
+                console.log("Playback paused");
+                setPlaying(false);
+                break;
+            default:
+                console.error("Unknown Playback state change: ", stateChange);
+        }
+    }
+
+    function onSelectTerm(e) {
+        setPlaying(false);
+        setCurrentIndex(Number(e.target.value));
+        setTermDrawerOpen(false);
+    }
+
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
@@ -106,35 +136,24 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                         </div>
                         <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-                        <div className="flashcard-nav fcs-landscape__nav">
-                            <button className="btn-nav" onClick={goPrev}>← Prev</button>
-                            <button className="btn-nav" onClick={goNext}>Next →</button>
-                            <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                            <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
-                                <button
-                                    className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
-                                    onClick={() => setAutoPlay(p => !p)}
-                                >{autoPlay ? '⏸ Auto' : '▶ Auto'}</button>
-                            </Tippy>
-                            <Tippy key="playercontrols" content={showPlayerControls ? 'Hide Player Controls' : 'Show Player Controls'} placement="top">
-                                <button
-                                    className={`btn-nav${showPlayerControls ? ' btn-nav--active' : ''}`}
-                                    onClick={() => setShowPlayerControls(p => !p)}
-                                >🎛️ Controls</button>
-                            </Tippy>
-                            <Tippy key="playpause" content={playing ? 'Pause' : 'Play'} placement="top">
-                                <button
-                                    className={`btn-nav${playing ? ' btn-nav--active' : ''}`}
-                                    onClick={() => setPlaying(p => !p)}
-                                >{playing ? '⏸' : '▶'}</button>
-                            </Tippy>
-                            <Tippy key="playbackrate" content={playbackRate === 1 ? 'Slow to ½×' : 'Reset to 1×'} placement="top">
-                                <button
-                                    className={`btn-nav${playbackRate !== 1 ? ' btn-nav--active' : ''}`}
-                                    onClick={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
-                                >🐢 {playbackRate === 1 ? '1×' : '½×'}</button>
-                            </Tippy>
-                        </div>
+                        <FlashcardNav
+                            className="fcs-landscape__nav"
+                            onPrev={goPrev}
+                            onNext={goNext}
+                            onShuffle={handleShuffle}
+                            autoPlay={autoPlay}
+                            onToggleAutoPlay={() => setAutoPlay(p => !p)}
+                            autoPlayActiveLabel="⏸ Auto"
+                            autoPlayInactiveLabel="▶ Auto"
+                            showPlayerControls={showPlayerControls}
+                            onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
+                            playing={playing}
+                            onTogglePlaying={() => setPlaying(p => !p)}
+                            playbackRate={playbackRate}
+                            onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                            repeat={repeat}
+                            onToggleRepeat={() => setRepeat(r => !r)}
+                        />
                     </div>
                     <div className="fcs-landscape__video">
                         <div className="flashcard-video">
@@ -144,16 +163,17 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                     title="ASL sign video"
                                     src={playbackUrl}
                                     playing={playing}
+                                    loop={repeat}
                                     autoPlay={autoPlay}
                                     controls={showPlayerControls}
                                     playsinline={true}
                                     muted={true}
-                                    // width="100%"
-                                    // height="100%"
+                                    width="100%"
+                                    height="100%"
                                     playbackRate={playbackRate}
-                                    onPlay={() => setPlaying(true)}
-                                    onPause={() => setPlaying(false)}
-                                    onEnded={() => setPlaying(false)}
+                                    onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                                    onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                                    onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
                                     onError={playbackError}
                                     config={{
                                         file: {
@@ -175,7 +195,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => { setPlaying(false); setCurrentIndex(Number(e.target.value)); }}
+                            onChange={onSelectTerm}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
@@ -216,9 +236,9 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 muted={true}
                                 width="100%"
                                 height="100%"
-                                onPlay={() => setPlaying(true)}
-                                onPause={() => setPlaying(false)}
-                                onEnded={() => setPlaying(false)}
+                                onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                                onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                                onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
                                 onError={playbackError}
                                 config={{
                                     file: {
@@ -235,36 +255,25 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         )}
                     </div>
                     <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-                    <div className="flashcard-nav">
-                        <button className="btn-nav" onClick={goPrev}>← Prev</button>
-                        <button className="btn-nav" onClick={goNext}>Next →</button>
-                        <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                        <button className="btn-nav btn-nav--terms" onClick={() => setTermDrawerOpen(true)}>📋 Terms</button>
-                        <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
-                            <button
-                                className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
-                                onClick={() => setAutoPlay(p => !p)}
-                            >{autoPlay ? '🔁 Auto' : '⏸ Wait'}</button>
-                        </Tippy>
-                        <Tippy key="playercontrols" content={showPlayerControls ? 'Hide Player Controls' : 'Show Player Controls'} placement="top">
-                            <button
-                                className={`btn-nav${showPlayerControls ? ' btn-nav--active' : ''}`}
-                                onClick={() => setShowPlayerControls(p => !p)}
-                            >🎛️ Controls</button>
-                        </Tippy>
-                        <Tippy key="playpause" content={playing ? 'Pause' : 'Play'} placement="top">
-                            <button
-                                className={`btn-nav${playing ? ' btn-nav--active' : ''}`}
-                                onClick={() => setPlaying(p => !p)}
-                            >{playing ? '⏸' : '▶'}</button>
-                        </Tippy>
-                        <Tippy key="playbackrate" content={playbackRate === 1 ? 'Slow to ½×' : 'Reset to 1×'} placement="top">
-                            <button
-                                className={`btn-nav${playbackRate !== 1 ? ' btn-nav--active' : ''}`}
-                                onClick={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
-                            >🐢 {playbackRate === 1 ? '1×' : '½×'}</button>
-                        </Tippy>
-                    </div>
+                    <FlashcardNav
+                        onPrev={goPrev}
+                        onNext={goNext}
+                        onShuffle={handleShuffle}
+                        onOpenTerms={() => setTermDrawerOpen(true)}
+                        autoPlay={autoPlay}
+                        onToggleAutoPlay={() => setAutoPlay(p => !p)}
+                        autoPlayActiveLabel="🔁 Auto"
+                        autoPlayInactiveLabel="⏸ Wait"
+                        showPlayerControls={showPlayerControls}
+                        onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
+                        playing={playing}
+                        onTogglePlaying={() => setPlaying(p => !p)}
+                        playbackRate={playbackRate}
+                        loop={repeat}
+                        onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                        repeat={repeat}
+                        onToggleRepeat={() => setRepeat(r => !r)}
+                    />
                 </div>
                 <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
                     <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
@@ -277,7 +286,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => { setPlaying(false); setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
+                            onChange={onSelectTerm}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
