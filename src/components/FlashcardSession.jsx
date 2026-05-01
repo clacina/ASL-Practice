@@ -4,13 +4,18 @@ import {shuffle} from "../utils/shuffle";
 import toast from "react-hot-toast";
 import {FlashcardNav} from "./FlashcardNav";
 import {FlashcardPlayer} from "./FlashcardPlayer";
+import {useLayoutMode} from "../hooks/useLayoutMode";
+import {useSwipe} from "../hooks/useSwipe";
+import {PhonePortraitLayout} from "./layouts/PhonePortraitLayout";
+import {PhoneLandscapeLayout} from "./layouts/PhoneLandscapeLayout";
+import {TabletPortraitLayout} from "./layouts/TabletPortraitLayout";
+import {TabletLandscapeLayout} from "./layouts/TabletLandscapeLayout";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [localTerms, setLocalTerms] = useState(terms);
     const [localColors, setLocalColors] = useState(cardColors);
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
-    const [isMobileHorizontal, setIsMobileHorizontal] = useState(false);
     const [autoPlay, setAutoPlay] = useState(false);
     const [showPlayerControls, setShowPlayerControls] = useState(true);
     const [playing, setPlaying] = useState(false);
@@ -18,20 +23,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [repeat, setRepeat] = useState(false);
     const selectRef = useRef(null);
 
-    useEffect(() => {
-        function check() {
-            setIsMobileHorizontal(
-                window.innerWidth < 1424 && window.matchMedia('(orientation: landscape)').matches
-            );
-        }
-        check();
-        window.addEventListener('resize', check);
-        window.addEventListener('orientationchange', check);
-        return () => {
-            window.removeEventListener('resize', check);
-            window.removeEventListener('orientationchange', check);
-        };
-    }, []);
+    const layoutMode = useLayoutMode();
 
     const goNext = useCallback(() => {
         setPlaying(false);
@@ -42,6 +34,8 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         setPlaying(false);
         setCurrentIndex(i => (i - 1 + localTerms.length) % localTerms.length);
     }, [localTerms.length]);
+
+    const swipeHandlers = useSwipe({onSwipeLeft: goNext, onSwipeRight: goPrev});
 
     function handleShuffle() {
         setPlaying(false);
@@ -126,67 +120,101 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
 
-    if (isMobileHorizontal) {
-        return (
-            <div className="flashcard-session">
-                <div className="fcs-landscape">
-                    <div className="fcs-landscape__controls">
-                        <button className="btn-back" onClick={onBack}>← Back</button>
-                        <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
-                            <span className="flashcard-term">{localTerms[currentIndex].term}</span>
-                        </div>
-                        <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-                        <FlashcardNav
-                            className="fcs-landscape__nav"
-                            onPrev={goPrev}
-                            onNext={goNext}
-                            onShuffle={handleShuffle}
-                            autoPlay={autoPlay}
-                            onToggleAutoPlay={() => setAutoPlay(p => !p)}
-                            autoPlayActiveLabel="⏸ Auto"
-                            autoPlayInactiveLabel="▶ Auto"
-                            showPlayerControls={showPlayerControls}
-                            onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
-                            playing={playing}
-                            onTogglePlaying={() => setPlaying(p => !p)}
-                            playbackRate={playbackRate}
-                            onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
-                            repeat={repeat}
-                            onToggleRepeat={() => setRepeat(r => !r)}
-                        />
+    const isPhonePortrait = layoutMode === 'phone-portrait';
+    const isMobileLayout = layoutMode === 'phone-portrait' || layoutMode === 'phone-landscape'
+        || layoutMode === 'tablet-portrait' || layoutMode === 'tablet-landscape';
+
+    if (isMobileLayout) {
+        const videoEl = (
+            <FlashcardPlayer
+                url={playbackUrl}
+                playing={playing}
+                loop={repeat}
+                autoPlay={autoPlay}
+                controls={showPlayerControls}
+                playbackRate={playbackRate}
+                onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
+                onError={playbackError}
+            />
+        );
+
+        const navEl = (
+            <FlashcardNav
+                onPrev={goPrev}
+                onNext={goNext}
+                onShuffle={handleShuffle}
+                onOpenTerms={isPhonePortrait ? () => setTermDrawerOpen(true) : undefined}
+                autoPlay={autoPlay}
+                onToggleAutoPlay={() => setAutoPlay(p => !p)}
+                autoPlayActiveLabel="🔁 Auto"
+                autoPlayInactiveLabel="⏸ Wait"
+                showPlayerControls={showPlayerControls}
+                onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
+                playing={playing}
+                onTogglePlaying={() => setPlaying(p => !p)}
+                playbackRate={playbackRate}
+                onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                repeat={repeat}
+                onToggleRepeat={() => setRepeat(r => !r)}
+            />
+        );
+
+        const termSelectEl = (
+            <select
+                ref={selectRef}
+                size={20}
+                className="term-select"
+                onChange={onSelectTerm}
+                value={currentIndex}
+            >
+                {sortedTerms.map(({term, i, fix}) => (
+                    <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
+                        {fix ? `[fix] ${term}` : term}
+                    </option>
+                ))}
+            </select>
+        );
+
+        const termListEl = isPhonePortrait ? (
+            <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
+                <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
+                <div className="term-drawer__panel">
+                    <div className="term-drawer__header">
+                        <span>Select a Term</span>
+                        <button className="term-drawer__close" onClick={() => setTermDrawerOpen(false)}>✕</button>
                     </div>
-                    <div className="fcs-landscape__video">
-                        <FlashcardPlayer
-                            url={playbackUrl}
-                            playing={playing}
-                            loop={repeat}
-                            autoPlay={autoPlay}
-                            controls={showPlayerControls}
-                            playbackRate={playbackRate}
-                            onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
-                            onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
-                            onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
-                            onError={playbackError}
-                        />
-                    </div>
-                    <div className="fcs-landscape__termlist">
-                        <select
-                            ref={selectRef}
-                            size={20}
-                            className="term-select"
-                            onChange={onSelectTerm}
-                            value={currentIndex}
-                        >
-                            {sortedTerms.map(({term, i, fix}) => (
-                                <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
-                                    {fix ? `[fix] ${term}` : term}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                    {termSelectEl}
                 </div>
             </div>
+        ) : termSelectEl;
+
+        const positionLabelEl = (
+            <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
         );
+
+        const sharedSlots = {
+            video: videoEl,
+            nav: navEl,
+            termList: termListEl,
+            positionLabel: positionLabelEl,
+            termText: localTerms[currentIndex].term,
+            termBg: bg,
+            termFg: fg,
+            onBack,
+            swipeHandlers,
+            title,
+            description,
+        };
+
+        switch (layoutMode) {
+            case 'phone-portrait':   return <PhonePortraitLayout {...sharedSlots} />;
+            case 'phone-landscape':  return <PhoneLandscapeLayout {...sharedSlots} />;
+            case 'tablet-portrait':  return <TabletPortraitLayout {...sharedSlots} />;
+            case 'tablet-landscape': return <TabletLandscapeLayout {...sharedSlots} />;
+            default: break;
+        }
     }
 
     return (
@@ -228,7 +256,6 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         playing={playing}
                         onTogglePlaying={() => setPlaying(p => !p)}
                         playbackRate={playbackRate}
-                        loop={repeat}
                         onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
                         repeat={repeat}
                         onToggleRepeat={() => setRepeat(r => !r)}
