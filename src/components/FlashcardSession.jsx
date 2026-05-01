@@ -121,10 +121,18 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                     src={playbackUrl}
                                     autoPlay={autoPlay}
                                     controls={true}
+                                    playsinline={true}
                                     muted={true}
-                                    width="100%"
-                                    height="100%"
+                                    // width="100%"
+                                    // height="100%"
                                     onError={playbackError}
+                                    config={{
+                                        file: {
+                                            attributes: {
+                                                playsinline: true
+                                            }
+                                        }
+                                    }}
                                 />
                             ) : (
                                 <div className="flashcard-video-placeholder">
@@ -171,12 +179,20 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 className="flashcard-video-iframe"
                                 title="ASL sign video"
                                 src={playbackUrl}
+                                playsinline={true}
                                 autoPlay={autoPlay}
                                 controls={true}
                                 muted={true}
                                 width="100%"
                                 height="100%"
                                 onError={playbackError}
+                                config={{
+                                    file: {
+                                        attributes: {
+                                            playsinline: true
+                                        }
+                                    }
+                                }}
                             ></ReactPlayer>
                         ) : (
                             <div className="flashcard-video-placeholder">
