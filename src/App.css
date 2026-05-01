@@ -696,6 +696,8 @@
 }
 
 /* ── Mobile landscape 3-column layout ────────────────── */
+/* DEPRECATED: replaced by .layout-* shells below.
+   Kept temporarily as a safety net; remove in a follow-up PR. */
 
 .fcs-landscape {
   display: grid;
@@ -762,6 +764,381 @@
   padding: 6px 10px;
   font-size: 13px;
   width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Layout: Phone Portrait
+   Video dominates ≥55% of viewport height; term overlays video.
+   ═══════════════════════════════════════════════════════════ */
+
+.layout-phone-portrait {
+  --lpp-video-height: 55vh;                       /* video player height */
+  --lpp-term-font-size: clamp(18px, 5vw, 28px);   /* term overlay text size */
+  --lpp-term-overlay-padding: 6px 12px;            /* padding on the term overlay badge */
+  --lpp-term-overlay-bottom: 12px;                 /* term overlay distance from video bottom */
+  --lpp-nav-btn-min-size: 44px;                    /* minimum tap target for nav buttons */
+  --lpp-nav-font-size: 14px;                       /* font size inside nav buttons */
+  --lpp-nav-gap: 6px;                              /* gap between nav buttons */
+  --lpp-gap: 8px;                                  /* gap between layout regions */
+  --lpp-position-font-size: 13px;                  /* position counter font size */
+  --lpp-padding: 8px;                              /* outer padding */
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--lpp-gap);
+  padding: var(--lpp-padding);
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.layout-phone-portrait__back {
+  align-self: flex-start;
+}
+
+.layout-phone-portrait__video-wrap {
+  position: relative;
+  width: 100%;
+  height: var(--lpp-video-height);
+  flex-shrink: 0;
+}
+
+.layout-phone-portrait__video-wrap .flashcard-video {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
+
+.layout-phone-portrait__term-overlay {
+  position: absolute;
+  left: 50%;
+  bottom: var(--lpp-term-overlay-bottom);
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: var(--lpp-term-overlay-padding);
+  font-size: var(--lpp-term-font-size);
+  font-weight: 700;
+  border-radius: 8px;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.layout-phone-portrait__position {
+  font-size: var(--lpp-position-font-size);
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.layout-phone-portrait__position .flashcard-position {
+  margin: 0;
+  font-size: inherit;
+}
+
+.layout-phone-portrait__nav .flashcard-nav {
+  gap: var(--lpp-nav-gap);
+  justify-content: center;
+}
+
+.layout-phone-portrait__nav .btn-nav {
+  min-height: var(--lpp-nav-btn-min-size);
+  font-size: var(--lpp-nav-font-size);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Layout: Phone Landscape
+   Video dominates ≥65% of viewport width; sidebar holds nav.
+   ═══════════════════════════════════════════════════════════ */
+
+.layout-phone-landscape {
+  --lpl-video-width: 65vw;                        /* video player width */
+  --lpl-sidebar-width: 35vw;                      /* sidebar width */
+  --lpl-term-font-size: clamp(13px, 2.5vw, 18px); /* term card text size */
+  --lpl-term-padding: 6px 8px;                     /* term card padding */
+  --lpl-nav-btn-min-size: 32px;                    /* minimum tap target for nav buttons */
+  --lpl-nav-font-size: 12px;                       /* font size inside nav buttons */
+  --lpl-nav-gap: 4px;                              /* gap between nav buttons */
+  --lpl-gap: 6px;                                  /* gap between video and sidebar */
+  --lpl-sidebar-gap: 6px;                          /* gap between sidebar regions */
+  --lpl-position-font-size: 12px;                  /* position counter font size */
+  --lpl-padding: 6px;                              /* outer padding */
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--lpl-gap);
+  padding: var(--lpl-padding);
+  flex-grow: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.layout-phone-landscape__video-wrap {
+  flex: 0 0 var(--lpl-video-width);
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.layout-phone-landscape__video-wrap .flashcard-video {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.layout-phone-landscape__sidebar {
+  flex: 1 1 var(--lpl-sidebar-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--lpl-sidebar-gap);
+  overflow: hidden;
+}
+
+.layout-phone-landscape__term {
+  padding: var(--lpl-term-padding);
+  font-size: var(--lpl-term-font-size);
+  font-weight: 700;
+  border-radius: 8px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layout-phone-landscape__position {
+  font-size: var(--lpl-position-font-size);
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.layout-phone-landscape__position .flashcard-position {
+  margin: 0;
+  font-size: inherit;
+}
+
+.layout-phone-landscape__nav .flashcard-nav {
+  flex-direction: column;
+  gap: var(--lpl-nav-gap);
+}
+
+.layout-phone-landscape__nav .btn-nav {
+  width: 100%;
+  min-height: var(--lpl-nav-btn-min-size);
+  font-size: var(--lpl-nav-font-size);
+  padding: 4px 6px;
+}
+
+.layout-phone-landscape__sidebar .term-select {
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 12px;
+  min-height: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Layout: Tablet Portrait
+   Video dominates ≥50% of viewport height; term sits below.
+   ═══════════════════════════════════════════════════════════ */
+
+.layout-tablet-portrait {
+  --ltp-video-height: 50vh;                        /* video player height */
+  --ltp-term-font-size: clamp(20px, 3vw, 32px);    /* term card text size */
+  --ltp-term-padding: 12px 16px;                   /* term card padding */
+  --ltp-nav-btn-min-size: 44px;                    /* minimum tap target for nav buttons */
+  --ltp-nav-font-size: 15px;                       /* font size inside nav buttons */
+  --ltp-nav-gap: 8px;                              /* gap between nav buttons */
+  --ltp-gap: 12px;                                 /* gap between layout regions */
+  --ltp-position-font-size: 14px;                  /* position counter font size */
+  --ltp-padding: 16px;                             /* outer padding */
+  --ltp-termlist-max-height: 200px;                /* inline term list panel max height */
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ltp-gap);
+  padding: var(--ltp-padding);
+  flex-grow: 1;
+  min-height: 0;
+}
+
+.layout-tablet-portrait__back {
+  align-self: flex-start;
+}
+
+.layout-tablet-portrait__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.layout-tablet-portrait__title {
+  margin: 0;
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.layout-tablet-portrait__desc {
+  margin: 0;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.layout-tablet-portrait__video-wrap {
+  width: 100%;
+  height: var(--ltp-video-height);
+  flex-shrink: 0;
+}
+
+.layout-tablet-portrait__video-wrap .flashcard-video {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+}
+
+.layout-tablet-portrait__term {
+  padding: var(--ltp-term-padding);
+  font-size: var(--ltp-term-font-size);
+  font-weight: 700;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.layout-tablet-portrait__position {
+  font-size: var(--ltp-position-font-size);
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.layout-tablet-portrait__position .flashcard-position {
+  margin: 0;
+  font-size: inherit;
+}
+
+.layout-tablet-portrait__nav .flashcard-nav {
+  gap: var(--ltp-nav-gap);
+  justify-content: center;
+}
+
+.layout-tablet-portrait__nav .btn-nav {
+  min-height: var(--ltp-nav-btn-min-size);
+  font-size: var(--ltp-nav-font-size);
+}
+
+.layout-tablet-portrait__termlist .term-select {
+  width: 100%;
+  max-height: var(--ltp-termlist-max-height);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   Layout: Tablet Landscape
+   Video dominates ≥55% of viewport width; sidebar on right.
+   ═══════════════════════════════════════════════════════════ */
+
+.layout-tablet-landscape {
+  --ltl-video-width: 60vw;                         /* video column width */
+  --ltl-sidebar-width: 40vw;                       /* sidebar width */
+  --ltl-term-font-size: clamp(18px, 2.5vw, 26px);  /* term card text size */
+  --ltl-term-padding: 10px 14px;                   /* term card padding */
+  --ltl-nav-btn-min-size: 40px;                    /* minimum tap target for nav buttons */
+  --ltl-nav-font-size: 14px;                       /* font size inside nav buttons */
+  --ltl-nav-gap: 6px;                              /* gap between nav buttons */
+  --ltl-gap: 12px;                                 /* gap between video col and sidebar */
+  --ltl-col-gap: 8px;                              /* gap between video & term in left col */
+  --ltl-sidebar-gap: 8px;                          /* gap between sidebar regions */
+  --ltl-position-font-size: 13px;                  /* position counter font size */
+  --ltl-padding: 12px;                             /* outer padding */
+
+  display: flex;
+  flex-direction: row;
+  gap: var(--ltl-gap);
+  padding: var(--ltl-padding);
+  flex-grow: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.layout-tablet-landscape__video-col {
+  flex: 0 0 var(--ltl-video-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ltl-col-gap);
+}
+
+.layout-tablet-landscape__video-wrap {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+}
+
+.layout-tablet-landscape__video-wrap .flashcard-video {
+  max-width: none;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: unset;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.layout-tablet-landscape__term {
+  padding: var(--ltl-term-padding);
+  font-size: var(--ltl-term-font-size);
+  font-weight: 700;
+  border-radius: 10px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.layout-tablet-landscape__position {
+  font-size: var(--ltl-position-font-size);
+  color: var(--text);
+  text-align: center;
+  margin: 0;
+}
+
+.layout-tablet-landscape__position .flashcard-position {
+  margin: 0;
+  font-size: inherit;
+}
+
+.layout-tablet-landscape__sidebar {
+  flex: 1 1 var(--ltl-sidebar-width);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ltl-sidebar-gap);
+  overflow: hidden;
+}
+
+.layout-tablet-landscape__nav .flashcard-nav {
+  flex-direction: column;
+  gap: var(--ltl-nav-gap);
+}
+
+.layout-tablet-landscape__nav .btn-nav {
+  width: 100%;
+  min-height: var(--ltl-nav-btn-min-size);
+  font-size: var(--ltl-nav-font-size);
+}
+
+.layout-tablet-landscape__sidebar .term-select {
+  flex-grow: 1;
+  overflow-y: auto;
+  font-size: 13px;
+  min-height: 0;
 }
 
 /* ── App banner ───────────────────────────────────────── */
