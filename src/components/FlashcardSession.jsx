@@ -3,6 +3,7 @@ import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
 import ReactPlayer from 'react-player'
 import toast from "react-hot-toast";
+import Tippy from "@tippyjs/react";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -10,12 +11,13 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [localColors, setLocalColors] = useState(cardColors);
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const [isMobileHorizontal, setIsMobileHorizontal] = useState(false);
+    const [autoPlay, setAutoPlay] = useState(false);
     const selectRef = useRef(null);
 
     useEffect(() => {
         function check() {
             setIsMobileHorizontal(
-                window.innerWidth < 1024 && window.matchMedia('(orientation: landscape)').matches
+                window.innerWidth < 1424 && window.matchMedia('(orientation: landscape)').matches
             );
         }
         check();
@@ -102,6 +104,12 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             <button className="btn-nav" onClick={goPrev}>← Prev</button>
                             <button className="btn-nav" onClick={goNext}>Next →</button>
                             <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
+                            <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
+                                <button
+                                    className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
+                                    onClick={() => setAutoPlay(p => !p)}
+                                >{autoPlay ? '⏸ Auto' : '▶ Auto'}</button>
+                        </Tippy>
                         </div>
                     </div>
                     <div className="fcs-landscape__video">
@@ -111,12 +119,20 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                     className="flashcard-video-iframe"
                                     title="ASL sign video"
                                     src={playbackUrl}
-                                    autoPlay={true}
+                                    autoPlay={autoPlay}
                                     controls={true}
+                                    playsinline={true}
                                     muted={true}
-                                    width="100%"
-                                    height="100%"
+                                    // width="100%"
+                                    // height="100%"
                                     onError={playbackError}
+                                    config={{
+                                        file: {
+                                            attributes: {
+                                                playsinline: true
+                                            }
+                                        }
+                                    }}
                                 />
                             ) : (
                                 <div className="flashcard-video-placeholder">
@@ -163,12 +179,20 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 className="flashcard-video-iframe"
                                 title="ASL sign video"
                                 src={playbackUrl}
-                                autoPlay={true}
+                                playsinline={true}
+                                autoPlay={autoPlay}
                                 controls={true}
                                 muted={true}
                                 width="100%"
                                 height="100%"
                                 onError={playbackError}
+                                config={{
+                                    file: {
+                                        attributes: {
+                                            playsinline: true
+                                        }
+                                    }
+                                }}
                             ></ReactPlayer>
                         ) : (
                             <div className="flashcard-video-placeholder">
@@ -182,6 +206,12 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         <button className="btn-nav" onClick={goNext}>Next →</button>
                         <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
                         <button className="btn-nav btn-nav--terms" onClick={() => setTermDrawerOpen(true)}>📋 Terms</button>
+                        <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
+                            <button
+                                className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
+                                onClick={() => setAutoPlay(p => !p)}
+                            >{autoPlay ? '🔁 Auto' : '⏸ Wait'}</button>
+                        </Tippy>
                     </div>
                 </div>
                 <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
