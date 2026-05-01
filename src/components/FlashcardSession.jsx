@@ -12,6 +12,9 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const [isMobileHorizontal, setIsMobileHorizontal] = useState(false);
     const [autoPlay, setAutoPlay] = useState(false);
+    const [showPlayerControls, setShowPlayerControls] = useState(true);
+    const [playing, setPlaying] = useState(false);
+    const [playbackRate, setPlaybackRate] = useState(1);
     const selectRef = useRef(null);
 
     useEffect(() => {
@@ -30,14 +33,17 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     }, []);
 
     const goNext = useCallback(() => {
+        setPlaying(false);
         setCurrentIndex(i => (i + 1) % localTerms.length);
     }, [localTerms.length]);
 
     const goPrev = useCallback(() => {
+        setPlaying(false);
         setCurrentIndex(i => (i - 1 + localTerms.length) % localTerms.length);
     }, [localTerms.length]);
 
     function handleShuffle() {
+        setPlaying(false);
         const indices = shuffle([...localTerms.keys()]);
         setLocalTerms(indices.map(i => localTerms[i]));
         setLocalColors(indices.map(i => localColors[i]));
@@ -109,7 +115,25 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                     className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
                                     onClick={() => setAutoPlay(p => !p)}
                                 >{autoPlay ? '⏸ Auto' : '▶ Auto'}</button>
-                        </Tippy>
+                            </Tippy>
+                            <Tippy key="playercontrols" content={showPlayerControls ? 'Hide Player Controls' : 'Show Player Controls'} placement="top">
+                                <button
+                                    className={`btn-nav${showPlayerControls ? ' btn-nav--active' : ''}`}
+                                    onClick={() => setShowPlayerControls(p => !p)}
+                                >🎛️ Controls</button>
+                            </Tippy>
+                            <Tippy key="playpause" content={playing ? 'Pause' : 'Play'} placement="top">
+                                <button
+                                    className={`btn-nav${playing ? ' btn-nav--active' : ''}`}
+                                    onClick={() => setPlaying(p => !p)}
+                                >{playing ? '⏸' : '▶'}</button>
+                            </Tippy>
+                            <Tippy key="playbackrate" content={playbackRate === 1 ? 'Slow to ½×' : 'Reset to 1×'} placement="top">
+                                <button
+                                    className={`btn-nav${playbackRate !== 1 ? ' btn-nav--active' : ''}`}
+                                    onClick={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                                >🐢 {playbackRate === 1 ? '1×' : '½×'}</button>
+                            </Tippy>
                         </div>
                     </div>
                     <div className="fcs-landscape__video">
@@ -119,12 +143,17 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                     className="flashcard-video-iframe"
                                     title="ASL sign video"
                                     src={playbackUrl}
+                                    playing={playing}
                                     autoPlay={autoPlay}
-                                    controls={true}
+                                    controls={showPlayerControls}
                                     playsinline={true}
                                     muted={true}
                                     // width="100%"
                                     // height="100%"
+                                    playbackRate={playbackRate}
+                                    onPlay={() => setPlaying(true)}
+                                    onPause={() => setPlaying(false)}
+                                    onEnded={() => setPlaying(false)}
                                     onError={playbackError}
                                     config={{
                                         file: {
@@ -146,7 +175,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => setCurrentIndex(Number(e.target.value))}
+                            onChange={e => { setPlaying(false); setCurrentIndex(Number(e.target.value)); }}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
@@ -179,12 +208,17 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 className="flashcard-video-iframe"
                                 title="ASL sign video"
                                 src={playbackUrl}
+                                playing={playing}
+                                playbackRate={playbackRate}
                                 playsinline={true}
                                 autoPlay={autoPlay}
-                                controls={true}
+                                controls={showPlayerControls}
                                 muted={true}
                                 width="100%"
                                 height="100%"
+                                onPlay={() => setPlaying(true)}
+                                onPause={() => setPlaying(false)}
+                                onEnded={() => setPlaying(false)}
                                 onError={playbackError}
                                 config={{
                                     file: {
@@ -212,6 +246,24 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                                 onClick={() => setAutoPlay(p => !p)}
                             >{autoPlay ? '🔁 Auto' : '⏸ Wait'}</button>
                         </Tippy>
+                        <Tippy key="playercontrols" content={showPlayerControls ? 'Hide Player Controls' : 'Show Player Controls'} placement="top">
+                            <button
+                                className={`btn-nav${showPlayerControls ? ' btn-nav--active' : ''}`}
+                                onClick={() => setShowPlayerControls(p => !p)}
+                            >🎛️ Controls</button>
+                        </Tippy>
+                        <Tippy key="playpause" content={playing ? 'Pause' : 'Play'} placement="top">
+                            <button
+                                className={`btn-nav${playing ? ' btn-nav--active' : ''}`}
+                                onClick={() => setPlaying(p => !p)}
+                            >{playing ? '⏸' : '▶'}</button>
+                        </Tippy>
+                        <Tippy key="playbackrate" content={playbackRate === 1 ? 'Slow to ½×' : 'Reset to 1×'} placement="top">
+                            <button
+                                className={`btn-nav${playbackRate !== 1 ? ' btn-nav--active' : ''}`}
+                                onClick={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                            >🐢 {playbackRate === 1 ? '1×' : '½×'}</button>
+                        </Tippy>
                     </div>
                 </div>
                 <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
@@ -225,7 +277,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => { setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
+                            onChange={e => { setPlaying(false); setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
