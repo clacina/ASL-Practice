@@ -1,7 +1,23 @@
-import {describe, it, expect} from 'vitest';
+import {describe, it, expect, beforeEach, vi} from 'vitest';
 import {render, screen, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {FlashcardSession} from '../src/components/FlashcardSession';
+
+beforeEach(() => {
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: vi.fn(query => ({
+            matches: false,
+            media: query,
+            onchange: null,
+            addListener: vi.fn(),
+            removeListener: vi.fn(),
+            addEventListener: vi.fn(),
+            removeEventListener: vi.fn(),
+            dispatchEvent: vi.fn(),
+        })),
+    });
+});
 
 const TERMS = [
     {term: 'Banana', code: 'https://example.com/banana.mp4'},

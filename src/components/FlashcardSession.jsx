@@ -1,9 +1,9 @@
 import {useState, useEffect, useCallback, useMemo, useRef} from "react";
 import {contrastColor} from "../utils/contrastColor";
 import {shuffle} from "../utils/shuffle";
-import ReactPlayer from 'react-player'
 import toast from "react-hot-toast";
-import Tippy from "@tippyjs/react";
+import {FlashcardNav} from "./FlashcardNav";
+import {FlashcardPlayer} from "./FlashcardPlayer";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,6 +12,10 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const [isMobileHorizontal, setIsMobileHorizontal] = useState(false);
     const [autoPlay, setAutoPlay] = useState(false);
+    const [showPlayerControls, setShowPlayerControls] = useState(true);
+    const [playing, setPlaying] = useState(false);
+    const [playbackRate, setPlaybackRate] = useState(1);
+    const [repeat, setRepeat] = useState(false);
     const selectRef = useRef(null);
 
     useEffect(() => {
@@ -30,14 +34,17 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     }, []);
 
     const goNext = useCallback(() => {
+        setPlaying(false);
         setCurrentIndex(i => (i + 1) % localTerms.length);
     }, [localTerms.length]);
 
     const goPrev = useCallback(() => {
+        setPlaying(false);
         setCurrentIndex(i => (i - 1 + localTerms.length) % localTerms.length);
     }, [localTerms.length]);
 
     function handleShuffle() {
+        setPlaying(false);
         const indices = shuffle([...localTerms.keys()]);
         setLocalTerms(indices.map(i => localTerms[i]));
         setLocalColors(indices.map(i => localColors[i]));
@@ -86,6 +93,35 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         toast.error("Playback error");
     }
 
+    const PLAYBACK_STATE_START = 1
+    const PLAYBACK_STATE_END = 2
+    const PLAYBACK_STATE_PAUSE = 3
+
+    function playingStateChanged(stateChange) {
+        switch(stateChange) {
+            case PLAYBACK_STATE_START:
+                console.log("Playback start");
+                setPlaying(true);
+                break;
+            case PLAYBACK_STATE_END:
+                console.log("Playback end: ", repeat);
+                setPlaying(false);
+                break;
+            case PLAYBACK_STATE_PAUSE:
+                console.log("Playback paused");
+                setPlaying(false);
+                break;
+            default:
+                console.error("Unknown Playback state change: ", stateChange);
+        }
+    }
+
+    function onSelectTerm(e) {
+        setPlaying(false);
+        setCurrentIndex(Number(e.target.value));
+        setTermDrawerOpen(false);
+    }
+
     const bg = localColors[currentIndex];
     const fg = contrastColor(bg);
     const playbackUrl = getPlaybackUrl();
@@ -100,53 +136,45 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                         </div>
                         <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-                        <div className="flashcard-nav fcs-landscape__nav">
-                            <button className="btn-nav" onClick={goPrev}>← Prev</button>
-                            <button className="btn-nav" onClick={goNext}>Next →</button>
-                            <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                            <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
-                                <button
-                                    className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
-                                    onClick={() => setAutoPlay(p => !p)}
-                                >{autoPlay ? '⏸ Auto' : '▶ Auto'}</button>
-                        </Tippy>
-                        </div>
+                        <FlashcardNav
+                            className="fcs-landscape__nav"
+                            onPrev={goPrev}
+                            onNext={goNext}
+                            onShuffle={handleShuffle}
+                            autoPlay={autoPlay}
+                            onToggleAutoPlay={() => setAutoPlay(p => !p)}
+                            autoPlayActiveLabel="⏸ Auto"
+                            autoPlayInactiveLabel="▶ Auto"
+                            showPlayerControls={showPlayerControls}
+                            onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
+                            playing={playing}
+                            onTogglePlaying={() => setPlaying(p => !p)}
+                            playbackRate={playbackRate}
+                            onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                            repeat={repeat}
+                            onToggleRepeat={() => setRepeat(r => !r)}
+                        />
                     </div>
                     <div className="fcs-landscape__video">
-                        <div className="flashcard-video">
-                            {playbackUrl ? (
-                                <ReactPlayer
-                                    className="flashcard-video-iframe"
-                                    title="ASL sign video"
-                                    src={playbackUrl}
-                                    autoPlay={autoPlay}
-                                    controls={true}
-                                    playsinline={true}
-                                    muted={true}
-                                    // width="100%"
-                                    // height="100%"
-                                    onError={playbackError}
-                                    config={{
-                                        file: {
-                                            attributes: {
-                                                playsinline: true
-                                            }
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <div className="flashcard-video-placeholder">
-                                    No video available
-                                </div>
-                            )}
-                        </div>
+                        <FlashcardPlayer
+                            url={playbackUrl}
+                            playing={playing}
+                            loop={repeat}
+                            autoPlay={autoPlay}
+                            controls={showPlayerControls}
+                            playbackRate={playbackRate}
+                            onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                            onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                            onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
+                            onError={playbackError}
+                        />
                     </div>
                     <div className="fcs-landscape__termlist">
                         <select
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => setCurrentIndex(Number(e.target.value))}
+                            onChange={onSelectTerm}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
@@ -173,46 +201,38 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                     <div className="flashcard-card" style={{backgroundColor: bg, color: fg}}>
                         <span className="flashcard-term">{localTerms[currentIndex].term}</span>
                     </div>
-                    <div className="flashcard-video">
-                        {playbackUrl ? (
-                            <ReactPlayer
-                                className="flashcard-video-iframe"
-                                title="ASL sign video"
-                                src={playbackUrl}
-                                playsinline={true}
-                                autoPlay={autoPlay}
-                                controls={true}
-                                muted={true}
-                                width="100%"
-                                height="100%"
-                                onError={playbackError}
-                                config={{
-                                    file: {
-                                        attributes: {
-                                            playsinline: true
-                                        }
-                                    }
-                                }}
-                            ></ReactPlayer>
-                        ) : (
-                            <div className="flashcard-video-placeholder">
-                                No video available
-                            </div>
-                        )}
-                    </div>
+                    <FlashcardPlayer
+                        url={playbackUrl}
+                        playing={playing}
+                        loop={repeat}
+                        autoPlay={autoPlay}
+                        controls={showPlayerControls}
+                        playbackRate={playbackRate}
+                        onPlay={() => playingStateChanged(PLAYBACK_STATE_START)}
+                        onPause={() => playingStateChanged(PLAYBACK_STATE_PAUSE)}
+                        onEnded={() => playingStateChanged(PLAYBACK_STATE_END)}
+                        onError={playbackError}
+                    />
                     <p className="flashcard-position">{currentIndex + 1} / {localTerms.length}</p>
-                    <div className="flashcard-nav">
-                        <button className="btn-nav" onClick={goPrev}>← Prev</button>
-                        <button className="btn-nav" onClick={goNext}>Next →</button>
-                        <button className="btn-nav" onClick={handleShuffle}>⇄ Shuffle</button>
-                        <button className="btn-nav btn-nav--terms" onClick={() => setTermDrawerOpen(true)}>📋 Terms</button>
-                        <Tippy key="autoplay" content={autoPlay ? 'Cancel Auto-Play' : 'Enable Auto-Play'} placement="top">
-                            <button
-                                className={`btn-nav${autoPlay ? ' btn-nav--active' : ''}`}
-                                onClick={() => setAutoPlay(p => !p)}
-                            >{autoPlay ? '🔁 Auto' : '⏸ Wait'}</button>
-                        </Tippy>
-                    </div>
+                    <FlashcardNav
+                        onPrev={goPrev}
+                        onNext={goNext}
+                        onShuffle={handleShuffle}
+                        onOpenTerms={() => setTermDrawerOpen(true)}
+                        autoPlay={autoPlay}
+                        onToggleAutoPlay={() => setAutoPlay(p => !p)}
+                        autoPlayActiveLabel="🔁 Auto"
+                        autoPlayInactiveLabel="⏸ Wait"
+                        showPlayerControls={showPlayerControls}
+                        onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
+                        playing={playing}
+                        onTogglePlaying={() => setPlaying(p => !p)}
+                        playbackRate={playbackRate}
+                        loop={repeat}
+                        onTogglePlaybackRate={() => setPlaybackRate(r => r === 1 ? 0.5 : 1)}
+                        repeat={repeat}
+                        onToggleRepeat={() => setRepeat(r => !r)}
+                    />
                 </div>
                 <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
                     <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
@@ -225,7 +245,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                             ref={selectRef}
                             size={20}
                             className="term-select"
-                            onChange={e => { setCurrentIndex(Number(e.target.value)); setTermDrawerOpen(false); }}
+                            onChange={onSelectTerm}
                             value={currentIndex}
                         >
                             {sortedTerms.map(({term, i, fix}) => (
