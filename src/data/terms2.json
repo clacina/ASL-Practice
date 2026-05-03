@@ -2,11 +2,16 @@
     {"term": "Sunshine", "code": "https://media.signbsl.com/videos/asl/signlanguagestudent/mp4/sunshine.mp4"},
     {"term": "Sunny", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/4AgKOd_XhBk.mp4"},
     {"term": "Car", "code": ""},
+    {"term": "Breakfast", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/breakfast.mp4"},
+    {"term": "Dinner","code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/EAT-NIGHT-107.mp4"},
+    {"term": "Work", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/hQKYeuN5tMI.mp4"},
+    {"term": "Fruit", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/FRUIT-1505.mp4"},
     {"term": "Drive", "code": ""},
     {"term": "Cat", "code": ""},
     {"term": "Dog", "code": ""},
     {"term": "Door", "code": ""},
     {"term": "Leave", "code": ""},
+    {"term": "Live (reside)", "code":  "https://player.vimeo.com/external/392265025.sd.mp4?s=7cdc3d0f8b0893c184823cff50f14d2aa15c59de&profile_id=164"},
     {"term": "Home", "code": ""},
     {"term": "House", "code": ""},
     {"term": "Book", "code": ""},
@@ -19,4 +24,3 @@
     {"term": "They", "code": "https://player.vimeo.com/external/392872390.sd.mp4?s=ef71210c6215c9a249afe6dc4c484666a129af72&profile_id=164"},
     {"term": "We", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/WE-1416.mp4"}
 ]
-

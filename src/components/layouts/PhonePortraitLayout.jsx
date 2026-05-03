@@ -9,6 +9,7 @@ export function PhonePortraitLayout({
     onBack,
     swipeHandlers,
 }) {
+    console.log("PhonePortraitLayout")
     return (
         <div className="layout-phone-portrait" {...swipeHandlers}>
             <button className="btn-back layout-phone-portrait__back" onClick={onBack}>← Back</button>

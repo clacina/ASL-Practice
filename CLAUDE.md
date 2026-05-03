@@ -11,7 +11,15 @@ yarn preview    # Preview production build
 yarn lint       # Run ESLint
 ```
 
-No test runner is configured yet. When adding tests, check `_specs/template.md` for the expected pattern — specs call for a `./tests` folder.
+Tests use **Vitest** + `@testing-library/react`. Run them with:
+
+```bash
+yarn test          # watch mode
+yarn test --run    # single run (CI)
+yarn test:ui       # Vitest browser UI
+```
+
+Test files live in `./tests/`. Use `renderHook` + `act` for hook tests.
 
 ## Environment
 
@@ -51,6 +59,33 @@ All term data lives in `src/data/*.json`. Each entry is:
 
 Categories are defined in `src/components/TermInput.jsx` as a `CATEGORIES` array. Each entry maps an icon, title, description, and a reference to a JSON data file. To add a new category, add a JSON file to `src/data/` and add an entry to this array.
 
+### Session components
+
+`FlashcardSession` is the main session controller. It owns all playback state (`currentIndex`, `playing`, `repeat`, `playbackRate`, etc.) and renders one of five paths based on `useLayoutMode()`:
+
+| Layout mode | Shell component |
+|---|---|
+| `phone-portrait` | `PhonePortraitLayout` |
+| `phone-landscape` | `PhoneLandscapeLayout` |
+| `tablet-portrait` | `TabletPortraitLayout` |
+| `tablet-landscape` | `TabletLandscapeLayout` |
+| `desktop` | Inline JSX in `FlashcardSession` |
+
+Layout shells are purely presentational — they receive named slot props (`video`, `nav`, `termList`, `positionLabel`, `termText`, `termBg`, `termFg`, `onBack`, `swipeHandlers`, `title`, `description`) and have no state of their own.
+
+**`FlashcardNav`** (`src/components/FlashcardNav.jsx`) — nav button bar (prev, next, shuffle, terms drawer toggle, autoplay, player-controls toggle, play/pause, speed, repeat). Pass `onOpenTerms={undefined}` to hide the terms button (used for tablet layouts with an inline term list).
+
+**`FlashcardPlayer`** (`src/components/FlashcardPlayer.jsx`) — thin wrapper around `react-player` with standardised props (`url`, `playing`, `loop`, `autoPlay`, `controls`, `playbackRate`, `onPlay`, `onPause`, `onEnded`, `onError`).
+
+### Hooks
+
+- `src/hooks/useLayoutMode.js` — returns the current layout mode string. Uses `screen.orientation.type` when available; falls back to `innerWidth > innerHeight`. Re-evaluates on `resize`, `orientationchange`, and `screen.orientation change`.
+- `src/hooks/useSwipe.js` — returns `{ onTouchStart, onTouchEnd }` for spread onto a container. 50 px threshold; swipe-left → next, swipe-right → prev.
+
+### Constants
+
+- `src/constants/breakpoints.js` — `PHONE_MAX_WIDTH = 767`, `TABLET_MAX_WIDTH = 1023`. Use these instead of magic numbers.
+
 ### Utilities
 
 - `src/utils/contrastColor.js` — given a hex background color, returns `#08060d` or `#ffffff` for legible text (used by `FlashcardSession` for card text color)
@@ -65,6 +100,17 @@ Categories are defined in `src/components/TermInput.jsx` as a `CATEGORIES` array
 - **CSS variables** defined in `src/index.css`: `--text`, `--text-h`, `--bg`, `--code-bg`, `--border`, `--accent`, `--accent-bg`, `--accent-border`, `--color-needs-fix`, `--shadow`, `--sans`, `--heading`, `--mono`
 - Dark mode overrides are in `src/index.css` under `@media (prefers-color-scheme: dark)`
 - All component styles live in `src/App.css` (no per-component CSS files)
+
+**Per-layout CSS custom properties** — each layout shell block opens with a custom-property block for easy tweaking without touching shared styles. Prefixes:
+
+| Prefix | Layout |
+|---|---|
+| `--lpp-` | phone-portrait |
+| `--lpl-` | phone-landscape |
+| `--ltp-` | tablet-portrait |
+| `--ltl-` | tablet-landscape |
+
+The old `.fcs-landscape` block in `App.css` is deprecated (commented) — it has been superseded by the layout shells and should be removed in a follow-up.
 
 ## Stack
 

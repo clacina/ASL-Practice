@@ -11,6 +11,7 @@ export function TabletPortraitLayout({
     title,
     description,
 }) {
+    console.log("TabletPortraitLayout")
     return (
         <div className="layout-tablet-portrait" {...swipeHandlers}>
             <button className="btn-back layout-tablet-portrait__back" onClick={onBack}>← Back</button>

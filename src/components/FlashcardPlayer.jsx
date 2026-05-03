@@ -35,7 +35,7 @@ export function FlashcardPlayer({
                     config={{
                         file: {
                             attributes: {
-                                playsinline: true,
+                                playsInline: true,
                             },
                         },
                     }}

@@ -125,6 +125,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         || layoutMode === 'tablet-portrait' || layoutMode === 'tablet-landscape';
 
     if (isMobileLayout) {
+        console.log("Mobile layout mode");
         const videoEl = (
             <FlashcardPlayer
                 url={playbackUrl}
@@ -217,6 +218,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         }
     }
 
+    console.log("Non-mobile display");
     return (
         <div className="flashcard-session">
             <button className="btn-back" onClick={onBack}>← Back</button>

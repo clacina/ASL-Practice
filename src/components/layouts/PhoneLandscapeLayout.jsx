@@ -9,6 +9,7 @@ export function PhoneLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
+    console.log("PhoneLandscapeLayout")
     return (
         <div className="layout-phone-landscape" {...swipeHandlers}>
             <div className="layout-phone-landscape__video-wrap">

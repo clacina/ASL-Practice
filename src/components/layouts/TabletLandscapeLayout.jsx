@@ -9,6 +9,7 @@ export function TabletLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
+    console.log("TabletLandscapeLayout")
     return (
         <div className="layout-tablet-landscape" {...swipeHandlers}>
             <div className="layout-tablet-landscape__video-col">
