@@ -148,7 +148,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                 onPrev={goPrev}
                 onNext={goNext}
                 onShuffle={handleShuffle}
-                onOpenTerms={isPhonePortrait ? () => setTermDrawerOpen(true) : undefined}
+                onOpenTerms={isMobileLayout ? () => setTermDrawerOpen(true) : undefined}
                 autoPlay={autoPlay}
                 onToggleAutoPlay={() => setAutoPlay(p => !p)}
                 autoPlayActiveLabel="🔁 Auto"
@@ -180,7 +180,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
             </select>
         );
 
-        const termListEl = isPhonePortrait ? (
+        const termListEl = isMobileLayout ? (
             <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
                 <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
                 <div className="term-drawer__panel">

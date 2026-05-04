@@ -547,11 +547,7 @@
   border: 1px solid var(--border);
   border-radius: 8px;
 
-  @media (max-width: 1024px) {
-    flex: 0 0 160px;
-  }
-
-  @media (max-width: 640px) {
+  @media (max-width: 1023px) {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -568,7 +564,7 @@
 }
 
 .term-drawer--open {
-  @media (max-width: 640px) {
+  @media (max-width: 1023px) {
     display: flex;
   }
 }
@@ -576,7 +572,7 @@
 .term-drawer__backdrop {
   display: none;
 
-  @media (max-width: 640px) {
+  @media (max-width: 1023px) {
     display: none;
     position: fixed;
     inset: 0;
@@ -584,7 +580,7 @@
     z-index: 199;
 
     .term-drawer--open & {
-      display: block;
+      /*display: block;*/
     }
   }
 }
@@ -599,7 +595,7 @@
 .term-drawer__header {
   display: none;
 
-  @media (max-width: 640px) {
+  @media (max-width: 1023px) {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -683,9 +679,9 @@
   }
 }
 
-.btn-nav--terms {
-  display: none;
-}
+/*.btn-nav--terms {*/
+/*  display: none;*/
+/*}*/
 
 @media (max-width: 1024px) {
   .flashcard-video {
