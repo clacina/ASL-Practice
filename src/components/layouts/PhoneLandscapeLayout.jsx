@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export function PhoneLandscapeLayout({
     video,
     nav,
@@ -9,7 +11,12 @@ export function PhoneLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
-    console.log("PhoneLandscapeLayout")
+    // toast("PhoneLandscape Layout loaded", {
+    //     style: {
+    //         background: 'white',
+    //         color: 'black'
+    //     }
+    // });
     return (
         <div className="layout-phone-landscape" {...swipeHandlers}>
             <div className="layout-phone-landscape__video-wrap">

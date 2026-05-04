@@ -17,7 +17,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [localColors, setLocalColors] = useState(cardColors);
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const [autoPlay, setAutoPlay] = useState(false);
-    const [showPlayerControls, setShowPlayerControls] = useState(true);
+    const [showPlayerControls, setShowPlayerControls] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [playbackRate, setPlaybackRate] = useState(1);
     const [repeat, setRepeat] = useState(false);
@@ -124,6 +124,8 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const isMobileLayout = layoutMode === 'phone-portrait' || layoutMode === 'phone-landscape'
         || layoutMode === 'tablet-portrait' || layoutMode === 'tablet-landscape';
 
+    console.log("isPhonePortrait: ", isPhonePortrait);
+    console.log("isMobileLayout: ", isMobileLayout);
     if (isMobileLayout) {
         console.log("Mobile layout mode");
         const videoEl = (

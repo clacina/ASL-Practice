@@ -19,6 +19,7 @@ export function FlashcardNav({
     repeat,
     onToggleRepeat,
 }) {
+    console.log("FlashcardNav ", `flashcard-nav${className ? ` ${className}` : ''}`);
     return (
         <div className={`flashcard-nav${className ? ` ${className}` : ''}`}>
             <button className="btn-nav" onClick={onPrev}>← Prev</button>

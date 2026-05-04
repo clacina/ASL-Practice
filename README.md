@@ -22,3 +22,14 @@ asl@lacinaslair.com
 16)0c,L#E$n&A%U=
 
 /home/lacinasl/lacinaslair.com/asl
+
+### Mobile device resolutions
+
+iPhone 14 Pro
+393 x 665
+734 x 337
+
+768 x 904
+1024 x 648
+
+

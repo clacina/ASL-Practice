@@ -23,7 +23,7 @@ export function FlashcardPlayer({
                     loop={loop}
                     autoPlay={autoPlay}
                     controls={controls}
-                    playsinline={true}
+                    playsInline={true}
                     muted={true}
                     width="100%"
                     height="100%"
