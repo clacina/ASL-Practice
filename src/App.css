@@ -605,6 +605,8 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--text-h);
+    border: 2px solid red;
+    width: 200px;
   }
 }
 
@@ -1029,7 +1031,8 @@
 }
 
 .layout-tablet-portrait__termlist .term-select {
-  width: 100%;
+  /*width: 100%;*/
+  width: 300px;
   max-height: var(--ltp-termlist-max-height);
 }
 

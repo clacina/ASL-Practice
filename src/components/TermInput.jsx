@@ -105,14 +105,14 @@ export function TermInput({onStart}) {
                 setNumberList(numberData);
             });
         }
-        // const displayString = `${width} x ${height}`;
-        // console.log(displayString);
-        // toast(displayString, {
-        //     style: {
-        //         background: 'white',
-        //         color: 'black'
-        //     }
-        // });
+        const displayString = `${width} x ${height}`;
+        console.log(displayString);
+        toast(displayString, {
+            style: {
+                background: 'white',
+                color: 'black'
+            }
+        });
     }, [height, width]);
 
     useEffect(() => {

@@ -11,12 +11,12 @@ export function PhoneLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
-    // toast("PhoneLandscape Layout loaded", {
-    //     style: {
-    //         background: 'white',
-    //         color: 'black'
-    //     }
-    // });
+    toast("PhoneLandscape Layout loaded", {
+        style: {
+            background: 'white',
+            color: 'black'
+        }
+    });
     return (
         <div className="layout-phone-landscape" {...swipeHandlers}>
             <div className="layout-phone-landscape__video-wrap">

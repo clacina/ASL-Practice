@@ -73,7 +73,9 @@ Categories are defined in `src/components/TermInput.jsx` as a `CATEGORIES` array
 
 Layout shells are purely presentational — they receive named slot props (`video`, `nav`, `termList`, `positionLabel`, `termText`, `termBg`, `termFg`, `onBack`, `swipeHandlers`, `title`, `description`) and have no state of their own.
 
-**`FlashcardNav`** (`src/components/FlashcardNav.jsx`) — nav button bar (prev, next, shuffle, terms drawer toggle, autoplay, player-controls toggle, play/pause, speed, repeat). Pass `onOpenTerms={undefined}` to hide the terms button (used for tablet layouts with an inline term list).
+The `termList` slot differs by context: on all mobile layouts (`isMobileLayout`) it is a bottom-sheet `.term-drawer` element (hidden until the "📋 Terms" nav button is tapped, CSS breakpoint `max-width: 1023px`); on desktop it is rendered inline as a sidebar.
+
+**`FlashcardNav`** (`src/components/FlashcardNav.jsx`) — nav button bar (prev, next, shuffle, terms drawer toggle, autoplay, player-controls toggle, play/pause, speed, repeat). Pass `onOpenTerms={undefined}` to hide the terms button (desktop only; all mobile layouts pass a callback that opens the term drawer).
 
 **`FlashcardPlayer`** (`src/components/FlashcardPlayer.jsx`) — thin wrapper around `react-player` with standardised props (`url`, `playing`, `loop`, `autoPlay`, `controls`, `playbackRate`, `onPlay`, `onPause`, `onEnded`, `onError`).
 
@@ -115,7 +117,7 @@ The old `.fcs-landscape` block in `App.css` is deprecated (commented) — it has
 ## Stack
 
 - React 19, no router or state management library
-- Vite 8 with `@vitejs/plugin-react` (Babel/Oxc transform, not SWC)
+- Vite 8 with `@vitejs/plugin-react` (Babel/Oxc transform, not SWC); `base: "/asl"` set in `vite.config.js` for subdirectory deployment
 - Plain CSS (`src/App.css`, `src/index.css`) — no CSS framework
 - `react-hot-toast` — toast notifications (Toaster mounted in App)
 - `react-player` — video playback in FlashcardSession (replaces iframe)

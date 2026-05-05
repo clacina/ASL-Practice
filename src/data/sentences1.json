@@ -1,0 +1,16 @@
+[
+    {"term": "See you later", "code": ""},
+    {"term": "How are you?", "code": ""},
+    {"term": "I'm fine", "code": ""},
+    {"term": "I'm ok", "code": ""},
+    {"term": "I'm sick", "code": ""},
+    {"term": "I'm not feeling good", "code": ""},
+    {"term": "I'm feeling good", "code": ""},
+    {"term": "I'm feeling pain, body", "code": ""},
+    {"term": "Good Morning", "code": ""},
+    {"term": "Good Noon", "code": ""},
+    {"term": "Good Afternoon", "code": ""},
+    {"term": "Good Night", "code": ""},
+    {"term": "Midnight", "code": ""}
+]
+

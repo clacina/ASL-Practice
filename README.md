@@ -32,4 +32,11 @@ iPhone 14 Pro
 768 x 904
 1024 x 648
 
+# Classmates
 
+Stacy Maxwell - sr@stacyrosevear.com
+Brianne O'Reilly - oreilly410@gmail.com
+Lindsey Bogovich
+Brittany Phillips
+Karen McElrath
+Cherie
