@@ -17,7 +17,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const [localColors, setLocalColors] = useState(cardColors);
     const [termDrawerOpen, setTermDrawerOpen] = useState(false);
     const [autoPlay, setAutoPlay] = useState(false);
-    const [showPlayerControls, setShowPlayerControls] = useState(true);
+    const [showPlayerControls, setShowPlayerControls] = useState(false);
     const [playing, setPlaying] = useState(false);
     const [playbackRate, setPlaybackRate] = useState(1);
     const [repeat, setRepeat] = useState(false);
@@ -124,7 +124,10 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
     const isMobileLayout = layoutMode === 'phone-portrait' || layoutMode === 'phone-landscape'
         || layoutMode === 'tablet-portrait' || layoutMode === 'tablet-landscape';
 
+    console.log("isPhonePortrait: ", isPhonePortrait);
+    console.log("isMobileLayout: ", isMobileLayout);
     if (isMobileLayout) {
+        console.log("Mobile layout mode");
         const videoEl = (
             <FlashcardPlayer
                 url={playbackUrl}
@@ -145,7 +148,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                 onPrev={goPrev}
                 onNext={goNext}
                 onShuffle={handleShuffle}
-                onOpenTerms={isPhonePortrait ? () => setTermDrawerOpen(true) : undefined}
+                onOpenTerms={isMobileLayout ? () => setTermDrawerOpen(true) : undefined}
                 autoPlay={autoPlay}
                 onToggleAutoPlay={() => setAutoPlay(p => !p)}
                 autoPlayActiveLabel="🔁 Auto"
@@ -177,7 +180,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
             </select>
         );
 
-        const termListEl = isPhonePortrait ? (
+        const termListEl = isMobileLayout ? (
             <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
                 <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
                 <div className="term-drawer__panel">
@@ -217,6 +220,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         }
     }
 
+    console.log("Non-mobile display");
     return (
         <div className="flashcard-session">
             <button className="btn-back" onClick={onBack}>← Back</button>

@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export function TabletLandscapeLayout({
     video,
     nav,
@@ -9,6 +11,12 @@ export function TabletLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
+    toast("TabletLandscape Layout loaded", {
+        style: {
+            background: 'white',
+            color: 'black'
+        }
+    });
     return (
         <div className="layout-tablet-landscape" {...swipeHandlers}>
             <div className="layout-tablet-landscape__video-col">

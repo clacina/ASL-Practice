@@ -10,6 +10,7 @@ import date_time_terms from "../data/calendar-terms.json";
 import color_terms from "../data/colors.json";
 import faire_terms from "../data/faire.json";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const DEVELOPMENT = false;
 
@@ -48,10 +49,31 @@ const webResources = [
     {url: "https://en.wikipedia.org/wiki/American_Sign_Language", description: "Wikipedia", type: ""},
 ];
 
+
+function useWindowDimensions() {
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return dimensions;
+}
+
+
 export function TermInput({onStart}) {
     const [error, setError] = useState("");
     const [wordlist, setWordlist] = useState([]);
     const [numberList, setNumberList] = useState([]);
+    const { height, width } = useWindowDimensions();
 
     useEffect(() => {
         if (DEVELOPMENT) {
@@ -83,7 +105,15 @@ export function TermInput({onStart}) {
                 setNumberList(numberData);
             });
         }
-    }, []);
+        const displayString = `${width} x ${height}`;
+        console.log(displayString);
+        toast(displayString, {
+            style: {
+                background: 'white',
+                color: 'black'
+            }
+        });
+    }, [height, width]);
 
     useEffect(() => {
         if (DEVELOPMENT) {

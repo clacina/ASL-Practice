@@ -1,0 +1,66 @@
+/* ── Passphrase page ──────────────────────────────────── */
+
+.passphrase-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  padding: 28px 12px;
+
+  @media (max-width: 640px) {
+    padding: 32px 16px;
+  }
+}
+
+.passphrase-page__body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.passphrase-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 24px;
+  box-shadow: var(--shadow);
+}
+
+.passphrase-page__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.passphrase-page__input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-color: var(--accent);
+  }
+}
+
+.passphrase-page__error {
+  margin: 0;
+  font-size: 14px;
+  color: var(--color-needs-fix);
+}
+
+.passphrase-page__submit {
+  align-self: flex-end;
+}

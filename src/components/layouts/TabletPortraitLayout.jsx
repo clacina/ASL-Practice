@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export function TabletPortraitLayout({
     video,
     nav,
@@ -11,6 +13,12 @@ export function TabletPortraitLayout({
     title,
     description,
 }) {
+    toast("TabletPortrait Layout loaded", {
+        style: {
+            background: 'white',
+            color: 'black'
+        }
+    });
     return (
         <div className="layout-tablet-portrait" {...swipeHandlers}>
             <button className="btn-back layout-tablet-portrait__back" onClick={onBack}>← Back</button>
