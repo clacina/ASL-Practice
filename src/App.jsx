@@ -5,6 +5,9 @@ import {FlashcardSession} from "./components/FlashcardSession";
 import {Footer} from "./components/Footer";
 import {PassphrasePage} from "./components/PassphrasePage";
 import "./App.css";
+import "./footer.css";
+import "./passphrase.css";
+import "./landingpage.css";
 import {Toaster} from "react-hot-toast";
 
 function App() {
