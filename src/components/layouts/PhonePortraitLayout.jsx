@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
 
 export function PhonePortraitLayout({
     video,
@@ -11,7 +12,7 @@ export function PhonePortraitLayout({
     onBack,
     swipeHandlers,
 }) {
-    toast("PhonePortrait Layout loaded", {
+    debugLayouts && toast("PhonePortrait Layout loaded", {
         style: {
             background: 'white',
             color: 'black'

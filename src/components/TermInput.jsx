@@ -17,6 +17,7 @@ import asl_2_2_terms from "../data/asl_2_2_terms.json" with {type: "json"};
 
 import axios from "axios";
 import toast from "react-hot-toast";
+const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
 
 const DEVELOPMENT = false;
 
@@ -120,7 +121,7 @@ export function TermInput({onStart}) {
         }
         const displayString = `${width} x ${height}`;
         console.log(displayString);
-        toast(displayString, {
+        debugLayouts && toast(displayString, {
             style: {
                 background: 'white',
                 color: 'black'
