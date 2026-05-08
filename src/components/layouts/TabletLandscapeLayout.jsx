@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
 
 export function TabletLandscapeLayout({
     video,
@@ -11,7 +12,7 @@ export function TabletLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
-    toast("TabletLandscape Layout loaded", {
+    debugLayouts && toast("TabletLandscape Layout loaded", {
         style: {
             background: 'white',
             color: 'black'

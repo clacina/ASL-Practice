@@ -10,6 +10,7 @@ import {PhonePortraitLayout} from "./layouts/PhonePortraitLayout";
 import {PhoneLandscapeLayout} from "./layouts/PhoneLandscapeLayout";
 import {TabletPortraitLayout} from "./layouts/TabletPortraitLayout";
 import {TabletLandscapeLayout} from "./layouts/TabletLandscapeLayout";
+import {TermsListModalDialog} from "./TermsListModal.jsx";
 
 export function FlashcardSession({terms, cardColors, onBack, title, description}) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -126,6 +127,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
 
     console.log("isPhonePortrait: ", isPhonePortrait);
     console.log("isMobileLayout: ", isMobileLayout);
+    console.log("termDrawOpen: ", termDrawerOpen);
     if (isMobileLayout) {
         console.log("Mobile layout mode");
         const videoEl = (
@@ -152,7 +154,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                 autoPlay={autoPlay}
                 onToggleAutoPlay={() => setAutoPlay(p => !p)}
                 autoPlayActiveLabel="🔁 Auto"
-                autoPlayInactiveLabel="⏸ Wait"
+                autoPlayInactiveLabel="⏸ Auto"
                 showPlayerControls={showPlayerControls}
                 onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
                 playing={playing}
@@ -167,7 +169,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         const termSelectEl = (
             <select
                 ref={selectRef}
-                size={20}
+                size={10}
                 className="term-select"
                 onChange={onSelectTerm}
                 value={currentIndex}
@@ -181,15 +183,13 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         );
 
         const termListEl = isMobileLayout ? (
-            <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
-                <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
-                <div className="term-drawer__panel">
-                    <div className="term-drawer__header">
-                        <span>Select a Term</span>
-                        <button className="term-drawer__close" onClick={() => setTermDrawerOpen(false)}>✕</button>
-                    </div>
-                    {termSelectEl}
-                </div>
+            <div>
+                {termDrawerOpen && <TermsListModalDialog
+                    onClose={() => setTermDrawerOpen(false)}
+                    currentIndex={currentIndex}
+                    onSelectTerm={onSelectTerm}
+                    sortedTerms={sortedTerms}
+                />}
             </div>
         ) : termSelectEl;
 
@@ -254,7 +254,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         autoPlay={autoPlay}
                         onToggleAutoPlay={() => setAutoPlay(p => !p)}
                         autoPlayActiveLabel="🔁 Auto"
-                        autoPlayInactiveLabel="⏸ Wait"
+                        autoPlayInactiveLabel="⏸ Auto"
                         showPlayerControls={showPlayerControls}
                         onTogglePlayerControls={() => setShowPlayerControls(p => !p)}
                         playing={playing}
@@ -265,27 +265,20 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
                         onToggleRepeat={() => setRepeat(r => !r)}
                     />
                 </div>
-                <div className={`term-drawer${termDrawerOpen ? ' term-drawer--open' : ''}`}>
-                    <div className="term-drawer__backdrop" onClick={() => setTermDrawerOpen(false)} />
-                    <div className="term-drawer__panel">
-                        <div className="term-drawer__header">
-                            <span>Select a Term</span>
-                            <button className="term-drawer__close" onClick={() => setTermDrawerOpen(false)}>✕</button>
-                        </div>
-                        <select
-                            ref={selectRef}
-                            size={20}
-                            className="term-select"
-                            onChange={onSelectTerm}
-                            value={currentIndex}
-                        >
-                            {sortedTerms.map(({term, i, fix}) => (
-                                <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
-                                    {fix ? `[fix] ${term}` : term}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
+                <div className="term-drawer__panel">
+                    <select
+                        ref={selectRef}
+                        size={20}
+                        className="term-select"
+                        onChange={onSelectTerm}
+                        value={currentIndex}
+                    >
+                        {sortedTerms.map(({term, i, fix}) => (
+                            <option key={i} value={i} className={fix ? 'term-option--needs-fix' : undefined}>
+                                {fix ? `[fix] ${term}` : term}
+                            </option>
+                        ))}
+                    </select>
                 </div>
             </div>
         </div>

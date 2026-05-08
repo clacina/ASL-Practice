@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
 
 export function TabletPortraitLayout({
     video,
@@ -13,7 +14,7 @@ export function TabletPortraitLayout({
     title,
     description,
 }) {
-    toast("TabletPortrait Layout loaded", {
+    debugLayouts && toast("TabletPortrait Layout loaded", {
         style: {
             background: 'white',
             color: 'black'

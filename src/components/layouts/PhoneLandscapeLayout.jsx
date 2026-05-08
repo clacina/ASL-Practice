@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
 
 export function PhoneLandscapeLayout({
     video,
@@ -11,7 +12,7 @@ export function PhoneLandscapeLayout({
     onBack,
     swipeHandlers,
 }) {
-    toast("PhoneLandscape Layout loaded", {
+    debugLayouts && toast("PhoneLandscape Layout loaded", {
         style: {
             background: 'white',
             color: 'black'
