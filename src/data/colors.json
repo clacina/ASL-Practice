@@ -1,13 +1,20 @@
 [
-    {"term": "Green", "code": ""},
-    {"term": "Yellow", "code": ""},
-    {"term": "Orange", "code": ""},
-    {"term": "White", "code": ""},
-    {"term": "Gray", "code": ""},
-    {"term": "Purple", "code": ""},
+    {"term": "Beige", "code": "https://player.vimeo.com/external/392762963.sd.mp4?s=3e700b310f8a2c26b4e0d04812c7ac5378ef7b5b&profile_id=164"},
     {"term": "Black", "code": ""},
-    {"term": "Red", "code": ""},
     {"term": "Blue", "code": ""},
     {"term": "Brown", "code": ""},
-    {"term": "Pink", "code": ""}
+    {"term": "Gold", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/-VInE5qtMnE.mp4"},
+    {"term": "Gray", "code": ""},
+    {"term": "Green", "code": ""},
+    {"term": "Indigo", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/am__muW4lu8.mp4"},
+    {"term": "Orange", "code": ""},
+    {"term": "Pink", "code": ""},
+    {"term": "Purple", "code": ""},
+    {"term": "Red", "code": ""},
+    {"term": "Silver", "code":"https://media.signbsl.com/videos/asl/youtube/mp4/9fWuTtBHMGY.mp4"},
+    {"term": "Tan", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/LArybO-sRVE.mp4"},
+    {"term": "Turquoise", "code": "https://player.vimeo.com/external/392536451.sd.mp4?s=f74e8841764e2f1d06a4d314d0c6708fc090f519&profile_id=164"},
+    {"term": "White", "code": ""},
+    {"term": "Yellow", "code": ""}
 ]
+

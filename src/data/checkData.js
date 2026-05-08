@@ -3,53 +3,88 @@
     - which terms need fixing
     - which terms are duplicated in which files
 
+    Running data script...
+    Found 398 terms across 11 files.
+    -----------
+    Total Unique Terms:  398
+    Duplicates Count:  134
+    Terms Need Repair:  79
+
  */
 
-import terms from "../data/terms.json" with {type: "json"};
-import other_terms from "../data/terms2.json" with {type: "json"};
-import questions from "../data/questions.json" with {type: "json"};
-import verbs from "../data/verbs.json" with {type: "json"};
-import date_time_terms from "../data/calendar-terms.json" with {type: "json"};
-import color_terms from "../data/colors.json" with {type: "json"};
-import faire_terms from "../data/faire.json" with {type: "json"};
-import fixable_terms from "../data/terms_to_fix.json" with {type: "json"};
+import { readdirSync, readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const fileData = Object.fromEntries(
+    readdirSync(__dirname)
+        .filter(f => f.endsWith('.json'))
+        .filter(f => !f.endsWith('terms_to_fix.json'))
+        .map(f => [f, JSON.parse(readFileSync(join(__dirname, f), 'utf8'))])
+);
+import fixable_terms from "../data/terms_to_fix.json" with {type: "json"};
+const all_terms = Object.values(fileData).flat();
+
+const terms_names = [];
+const duplicates = [];
+const needs_fixing = [];
+
+function hasTerm(term) {
+    return !!terms_names.find(u => u.term === term.term);
+}
+
+function findTerm(term) {
+    return terms_names.find(u => u.term === term.term);
+}
+
+function needsFixing(term) {
+    return Object.hasOwn(term, "fix") && term["fix"] === true;
+}
 
 function checkData() {
     console.log("Running data script...");
-    const all_terms = [...terms, ...other_terms, ...questions, ...verbs, ...date_time_terms, ...color_terms, ...faire_terms, ...fixable_terms];
-    const terms_names = [];
-    const duplicates = [];
-    const needs_fixing = [];
 
     all_terms.forEach(term => {
-        const ndx = terms_names.indexOf(term.term);
-        if(ndx === -1) {
-            terms_names.push(term.term);
-        } else {
-            duplicates.push(term);
-        }
-        if (Object.hasOwn(term, "fix") && term["fix"] === true) {
+        if (needsFixing(term)) {
             needs_fixing.push(term);
+        } else {
+            if (hasTerm(term)) {
+                const dup = findTerm(term);
+                if(dup.code !== term.code) {
+                    console.log(`Same term ${term.term}, different codes: ${term.code} : ${dup.code} `);
+                }
+                duplicates.push(term);
+            } else {
+                terms_names.push(term);
+            }
         }
-    })
-    console.log(`Found ${terms_names.length} terms.`);
-    console.log("-----------")
+    });
+
+    console.log(`Found ${terms_names.length} terms across ${Object.keys(fileData).length} files.`);
+    console.log("-----------");
+
     fixable_terms.forEach(term => {
-        // console.log(terms_names.indexOf(term.term));
         const ndx = terms_names.indexOf(term.term);
-        if(ndx === -1) {
+        if (ndx === -1) {
             console.log("Need to fix term: ", term.term);
         } else {
             duplicates.push(term);
+        }
+    });
+
+    needs_fixing.forEach(fixable => {
+        if (terms_names.find(u => u.term === fixable.term)) {
+            console.log("Fixable in main: ", fixable.term);
         }
     })
 
     console.log("Total Unique Terms: ", terms_names.length);
     console.log("Duplicates Count: ", duplicates.length);
     console.log("Terms Need Repair: ", needs_fixing.length);
+    // console.log(needs_fixing);
     // console.log(duplicates);
-    console.log(needs_fixing);
 }
 
 checkData();

@@ -1,16 +1,15 @@
 [
-    {"term": "See you later", "code": ""},
-    {"term": "How are you?", "code": ""},
-    {"term": "I'm fine", "code": ""},
-    {"term": "I'm ok", "code": ""},
-    {"term": "I'm sick", "code": ""},
-    {"term": "I'm not feeling good", "code": ""},
-    {"term": "I'm feeling good", "code": ""},
-    {"term": "I'm feeling pain, body", "code": ""},
-    {"term": "Good Morning", "code": ""},
-    {"term": "Good Noon", "code": ""},
-    {"term": "Good Afternoon", "code": ""},
-    {"term": "Good Night", "code": ""},
-    {"term": "Midnight", "code": ""}
+    {"term": "See you later", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/see-you-later.mp4"},
+    {"term": "How are you?", "code": "https://www.youtube.com/embed/JPtdvzvpWMQ?rel=0"},
+    {"term": "I'm fine", "code": "", "fix": "true"},
+    {"term": "I'm ok / alright", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/ok.mp4"},
+    {"term": "I'm sick", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/sick.mp4"},
+    {"term": "I'm not feeling good", "code": "", "fix": "true"},
+    {"term": "I'm feeling good", "code": "", "fix": "true"},
+    {"term": "I'm feeling pain, body", "code": "", "fix": "true"},
+    {"term": "Good Morning", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/good-morning.mp4"},
+    {"term": "Noon", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/noon.mp4"},
+    {"term": "Good Afternoon", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/good-afternoon.mp4"},
+    {"term": "Good Night", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/good-night.mp4"}
 ]
 

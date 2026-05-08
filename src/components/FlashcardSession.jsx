@@ -167,7 +167,7 @@ export function FlashcardSession({terms, cardColors, onBack, title, description}
         const termSelectEl = (
             <select
                 ref={selectRef}
-                size={20}
+                size={10}
                 className="term-select"
                 onChange={onSelectTerm}
                 value={currentIndex}
