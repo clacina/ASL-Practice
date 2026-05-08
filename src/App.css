@@ -3,7 +3,7 @@
   margin: 0 auto;
   padding: 10px 2px;
   height: 100svh;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
   flex-direction: column;
 
