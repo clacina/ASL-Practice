@@ -1,7 +1,10 @@
 import {useState, useEffect} from "react";
 import Tippy from "@tippyjs/react";
 import "tippy.js/dist/tippy.css";
+import axios from "axios";
+import toast from "react-hot-toast";
 
+// Import all term files
 import terms from "../data/terms.json" with {type: "json"};
 import other_terms from "../data/terms2.json" with {type: "json"};
 import questions from "../data/questions.json" with {type: "json"};
@@ -15,12 +18,15 @@ import asl_2_2_terms from "../data/asl_2_2_terms.json" with {type: "json"};
 
 // import sentences from "../data/sentences1.json" with {type: "json"};
 
-import axios from "axios";
-import toast from "react-hot-toast";
+// Config content based on environment variables
 const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
+console.log("debugLayouts", debugLayouts);
+const showFingerspell = import.meta.env.VITE_SHOW_FINGERSPELL === "true";
+console.log("showFingerspell", showFingerspell);
+const showNumbers = import.meta.env.VITE_SHOW_NUMBERS === "true";
+console.log("showNumbers", showNumbers);
 
-const DEVELOPMENT = false;
-
+// Setup our display categories
 const CATEGORIES = [
     {icon: "📚", title: "ASL Level I & II Class Terms - Comprehensive", description: "Core vocabulary from ASL Level I and II coursework.", terms: terms},
     {icon: "❓", title: "Questions", description: "Essential question words and phrases used in ASL conversation.", terms: questions},
@@ -38,13 +44,16 @@ const CATEGORIES = [
     // {icon: "6️⃣", title: "ASL 2 - Week 1", description: "Terms learned in week 1 of ASL 2 course.", terms: terms},
 ];
 
-if (DEVELOPMENT) {
+if(showFingerspell) {
     CATEGORIES.splice(0, 0, {
         icon: "🖐️",
         title: "Finger Spelling",
         description: "Practice spelling words letter by letter using ASL handshapes.",
         terms: terms
     });
+}
+
+if (showNumbers) {
     CATEGORIES.splice(0, 0, {
         icon: "🔢",
         title: "Numbers",
@@ -65,47 +74,31 @@ const webResources = [
 
 
 function useWindowDimensions() {
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  useEffect(() => {
-    const handleResize = () => setDimensions({
-      width: window.innerWidth,
-      height: window.innerHeight,
+    const [dimensions, setDimensions] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight,
     });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
-  return dimensions;
+    useEffect(() => {
+        const handleResize = () => setDimensions({
+            width: window.innerWidth,
+            height: window.innerHeight,
+        });
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    return dimensions;
 }
 
 
 export function TermInput({onStart}) {
     const [error, setError] = useState("");
-    const [wordlist, setWordlist] = useState([]);
     const [numberList, setNumberList] = useState([]);
     const { height, width } = useWindowDimensions();
 
     useEffect(() => {
-        if (DEVELOPMENT) {
-            // load random words
-            const randomWordsUrl = "https://random-word-api.herokuapp.com/word?number=45";
-            axios.get(randomWordsUrl).then((response) => {
-                const wordData = [];
-                response.data.forEach(element => {
-                    const entry = {
-                        "term": element,
-                        "code": "",
-                        "type": "spell"
-                    };
-                    wordData.push(entry);
-                });
-                setWordlist(wordData);
-            });
-
+        if (showNumbers) {
             const randomNumbersUrl = "https://api.codetabs.com/v1/random/integer?min=1&max=9999&times=45";
             axios.get(randomNumbersUrl).then((response) => {
                 const numberData = [];
@@ -130,11 +123,10 @@ export function TermInput({onStart}) {
     }, [height, width]);
 
     useEffect(() => {
-        if (DEVELOPMENT) {
+        if(showNumbers) {
             CATEGORIES.find((category) => category.title === "Numbers").terms = numberList;
-            CATEGORIES.find((category) => category.title === "Finger Spelling").terms = wordlist;
         }
-    }, [wordlist, numberList]);
+    }, [numberList]);
 
     function handleStart(category) {
         const terms = category.terms;
@@ -143,6 +135,7 @@ export function TermInput({onStart}) {
             return;
         }
         setError("");
+
         onStart(terms, category.title, category.description);
     }
     return (
