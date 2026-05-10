@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Tippy from "@tippyjs/react";
 
-
+// Structure ─────────────────────────────────────────────────────────────
 /*
         <FingerspellContainer>
             <FingerspellHeader>
@@ -40,6 +40,7 @@ import Tippy from "@tippyjs/react";
  */
 
 
+// Styling ─────────────────────────────────────────────────────────────
 
 const FingerspellContainer = styled.div`
     width: 100%;
@@ -105,12 +106,12 @@ const FingerspellNav = styled.nav`
 `;
 
 const FingerspellTermsList = styled.div`
-    flex: 1;
+    flex: none;
     width: 200px;
     border: 1px solid pink;
-    max-height: 300px;
+    max-height: 330px;
     overflow-y: auto;
-    
+
     ul {
         list-style: none;
         text-align: left;
@@ -129,7 +130,7 @@ const FingerspellTermsList = styled.div`
 const FingerCharacter = styled.p`
     flex: 1;
     width: 300px;
-    height: ${props => props.showHint ? `calc(200px - 2rem)` : '200px'};
+    height: ${props => props.showHint ? `calc(200px - 2rem)` : "200px"};
     background-color: beige;
     font-family: "Gallaudet", cursive;
     font-size: 20rem;
@@ -144,6 +145,10 @@ const FingerspellHint = styled.p`
     width: 300px;
     border: 1px solid orange;
     height: 2rem;
+`;
+
+const ButtonNav = styled.div`
+    border: 1px solid green;
 `;
 
 const FingerspellCheck = styled.div`
@@ -176,7 +181,7 @@ const DisplayScene = Object.freeze(
         WORDS: "WORDS",
         LETTERS: "LETTERS"
     }
-)
+);
 
 export default function FingerspellComponent({onBack}) {
     const [isActive, setIsActive] = useState(false);
@@ -198,7 +203,6 @@ export default function FingerspellComponent({onBack}) {
     const [playbackRate, setPlaybackRate] = useState(1);
     const [stepInterval, setStepInterval] = useState(1000);
 
-
     const [repeat, setRepeat] = useState(false);
 
     // Word list index
@@ -206,6 +210,7 @@ export default function FingerspellComponent({onBack}) {
 
     // Test entry
     const [wordEntry, setWordEntry] = useState("");
+
 
     function updateSampleWordLength() {
         if (sampleWordLengthSetting < 2) {
@@ -221,7 +226,7 @@ export default function FingerspellComponent({onBack}) {
             newPlaybackRate = playbackRate + 1;
         }
         setPlaybackRate(newPlaybackRate);
-        switch(newPlaybackRate) {
+        switch (newPlaybackRate) {
             case 0:
                 setStepInterval(2000);
                 break;
@@ -238,11 +243,11 @@ export default function FingerspellComponent({onBack}) {
         // load random words
         // https://random-words-api.kushcreates.com/
         const words_to_fetch = 20;
-        const word_length = 5;
+        const word_length = sampleWordLength;
         const word_language = "language=en";
         const starts_with = "firstletter=a";
 
-        const randomWordsUrl = `https://random-words-api.kushcreates.com/api?words=${words_to_fetch}&${word_language}`;
+        const randomWordsUrl = `https://random-words-api.kushcreates.com/api?words=${words_to_fetch}&${word_language}&length=${word_length}`;
         axios.get(randomWordsUrl).then((response) => {
             const wordData = [];
             response.data.forEach(element => {
@@ -253,11 +258,12 @@ export default function FingerspellComponent({onBack}) {
                 };
                 wordData.push(entry);
             });
-            console.log(wordData);
             setWordList(wordData);
         });
 
     }
+
+    // Data Effect Logic ─────────────────────────────────────────────────────────────
 
     useEffect(() => {
         let interval = null;
@@ -267,7 +273,7 @@ export default function FingerspellComponent({onBack}) {
                     setStep((step) => step + 1);
                 }, stepInterval);
             } else {
-                if(!repeat) {
+                if (!repeat) {
                     clearInterval(interval);
                     setIsActive(false);
                 }
@@ -290,11 +296,11 @@ export default function FingerspellComponent({onBack}) {
     useEffect(() => {
         if (wordList.length > 0) {
             setWordIndex(0);
-            console.log(wordList);
             setWord(" " + wordList[0].term);
         }
-    }, [wordList])
+    }, [wordList]);
 
+    // Term Test Logic ─────────────────────────────────────────────────────────────
     function checkEntry() {
         console.log(wordEntry);
 
@@ -309,16 +315,44 @@ export default function FingerspellComponent({onBack}) {
         setWordEntry(e.target.value);
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            checkEntry()
+        }
+    };
+
     const onToggleRepeat = () => {
         setRepeat(r => !r);
     };
 
     function nextWord() {
-        if(sceneMode === DisplayScene.NORMAL) {
-            const newIndex = wordIndex < wordList.length ? wordIndex + 1 : 0
+        if (sceneMode === DisplayScene.NORMAL) {
+            const newIndex = wordIndex < wordList.length ? wordIndex + 1 : 0;
             setWordIndex(newIndex);
             setWord(" " + wordList[newIndex].term);
+            setWordEntry("");
+            setIsActive(true);
         }
+    }
+
+    function onWordSize() {
+        // For sample words - what length do we want? Small, medium or large
+        let newLengthSetting = 0;
+        if (sampleWordLengthSetting < 2) {
+            newLengthSetting = sampleWordLengthSetting + 1;
+        }
+        setSampleWordLengthSetting(newLengthSetting);
+        switch(newLengthSetting) {
+            case 1:
+                setSampleWordLength(getMediumWordLength());
+                break;
+            case 2:
+                setSampleWordLength(getLargeWordLength());
+                break;
+            default:
+                setSampleWordLength(getSmallWordLength());
+        }
+        loadWords();
     }
 
     function playbackLabel() {
@@ -369,39 +403,53 @@ export default function FingerspellComponent({onBack}) {
                     </FingerspellHint>}
                 </div>
                 <FingerspellNav>
-                    <button onClick={() => setIsActive(!isActive)}>{isActive ? "Pause" : "Start"}</button>
-                    <button onClick={() => {
-                        setIsActive(false);
-                    }}>Reset
-                    </button>
-                    <Tippy content={showHint ? "Click to hide hint" : "Click to show letter hint"}>
-                        <button onClick={() => setShowHint(!showHint)}>{!showHint ? "Show Hint" : "Hide Hint"}</button>
-                    </Tippy>
-                    <Tippy content={showWord ? "Click to show word" : "Click to hide word"}>
-                        <button onClick={() => setShowWord(!showWord)}>{!showWord ? "Show Word" : "Hide Word"}</button>
-                    </Tippy>
-                    <Tippy content={">"}>
-                        <button onClick={nextWord}>Next Word
+                    <ButtonNav>
+                        <button onClick={() => setIsActive(!isActive)}>{isActive ? "Pause" : "Start"}</button>
+                        <button onClick={() => {
+                            setIsActive(false);
+                        }}>Reset
                         </button>
-                    </Tippy>
-                    <Tippy content={playbackLabel().tip} placement="top">
-                        <button
-                            onClick={updatePlaybackSpeed}
-                        >{playbackLabel().icon} {playbackLabel().text}</button>
-                    </Tippy>
-                    <Tippy content={repeat ? "Click to Stop Looping" : "Click to Loop Video"} placement="top">
-                        <button
-                            onClick={onToggleRepeat}
-                        >🔁 {!repeat ? "Play once" : "Playback Looped"}</button>
-                    </Tippy>
-                    <Tippy content="Display Type">
-                        <button>✨ Display</button>
-                    </Tippy>
-
+                        <Tippy content={showHint ? "Click to hide hint" : "Click to show letter hint"}>
+                            <button
+                                onClick={() => setShowHint(!showHint)}>{!showHint ? "Show Hint" : "Hide Hint"}</button>
+                        </Tippy>
+                        <Tippy content={showWord ? "Click to show word" : "Click to hide word"}>
+                            <button
+                                onClick={() => setShowWord(!showWord)}>{!showWord ? "Show Word" : "Hide Word"}</button>
+                        </Tippy>
+                        <Tippy content={">"}>
+                            <button onClick={nextWord}>Next Word
+                            </button>
+                        </Tippy>
+                        <Tippy content={playbackLabel().tip} placement="top">
+                            <button
+                                onClick={updatePlaybackSpeed}
+                            >{playbackLabel().icon} {playbackLabel().text}</button>
+                        </Tippy>
+                        <Tippy content={repeat ? "Click to Stop Looping" : "Click to Loop Video"} placement="top">
+                            <button
+                                onClick={onToggleRepeat}
+                            >🔁 {!repeat ? "Play once" : "Playback Looped"}</button>
+                        </Tippy>
+                        <Tippy content="Display Type">
+                            <button>✨ Display</button>
+                        </Tippy>
+                        <Tippy content="Word Size">
+                            <button onClick={onWordSize}>📏 Word Size</button>
+                        </Tippy>
+                    </ButtonNav>
                     <FingerspellCheck>
-                        <input onChange={updateEntry} value={wordEntry}/>
-                        <button onClick={checkEntry}>Check</button>
+                        <div>
+                            <input
+                                onChange={updateEntry}
+                                onKeyDown={handleKeyDown}
+                                placeholder="Enter the term..."
+                                value={wordEntry}/>
+                            <button onClick={checkEntry}>Check</button>
+                        </div>
+                        {showWord && word}
                     </FingerspellCheck>
+
                 </FingerspellNav>
                 <FingerspellTermsList>
                     <ul>
