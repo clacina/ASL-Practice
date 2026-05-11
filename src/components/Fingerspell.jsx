@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
 import Tippy from "@tippyjs/react";
@@ -210,6 +210,7 @@ export default function FingerspellComponent({onBack}) {
 
     // Test entry
     const [wordEntry, setWordEntry] = useState("");
+    const inputRef = useRef();
 
 
     function updateSampleWordLength() {
@@ -228,13 +229,13 @@ export default function FingerspellComponent({onBack}) {
         setPlaybackRate(newPlaybackRate);
         switch (newPlaybackRate) {
             case 0:
-                setStepInterval(2000);
+                setStepInterval(1500);
                 break;
             case 1:
                 setStepInterval(1000);
                 break;
             default:
-                setStepInterval(500);
+                setStepInterval(700);
                 break;
         }
     }
@@ -302,10 +303,10 @@ export default function FingerspellComponent({onBack}) {
 
     // Term Test Logic ─────────────────────────────────────────────────────────────
     function checkEntry() {
-        console.log(wordEntry);
-
         if (wordEntry.toLowerCase() === word.slice(1).toLowerCase()) {
             toast.success("Correct!");
+            nextWord();
+            inputRef.current.focus();
         } else {
             toast.error("Wrong word! Try again.");
         }
@@ -441,6 +442,7 @@ export default function FingerspellComponent({onBack}) {
                     <FingerspellCheck>
                         <div>
                             <input
+                                ref={inputRef}
                                 onChange={updateEntry}
                                 onKeyDown={handleKeyDown}
                                 placeholder="Enter the term..."
@@ -453,9 +455,9 @@ export default function FingerspellComponent({onBack}) {
                 </FingerspellNav>
                 <FingerspellTermsList>
                     <ul>
-                        {wordList.map((word, index) => (
-                            <li key={index}>{word.term}</li>
-                        ))}
+                        {/*{wordList.map((word, index) => (*/}
+                        {/*    <li key={index}>{word.term}</li>*/}
+                        {/*))}*/}
                     </ul>
                 </FingerspellTermsList>
             </Fingerspell>
