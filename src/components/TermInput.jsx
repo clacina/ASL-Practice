@@ -9,14 +9,15 @@ import terms from "../data/terms.json" with {type: "json"};
 import other_terms from "../data/terms2.json" with {type: "json"};
 import questions from "../data/questions.json" with {type: "json"};
 import verbs from "../data/verbs.json" with {type: "json"};
-import date_time_terms from "../data/calendar-terms.json";
-import color_terms from "../data/colors.json";
-import faire_terms from "../data/faire.json";
+import date_time_terms from "../data/calendar-terms.json" with {type: "json"};
+import color_terms from "../data/colors.json" with {type: "json"};
+import faire_terms from "../data/faire.json" with {type: "json"};
+import countries from "../data/countries.json" with {type: "json"};
 
 import asl_2_1_terms from "../data/asl_2_1_terms.json" with {type: "json"};
 import asl_2_2_terms from "../data/asl_2_2_terms.json" with {type: "json"};
 
-// import sentences from "../data/sentences1.json" with {type: "json"};
+import sentences from "../data/sentences-multi.json" with {type: "json"};
 
 // Config content based on environment variables
 const debugLayouts = import.meta.env.VITE_DEBUGGING === 1;
@@ -37,7 +38,8 @@ const CATEGORIES = [
     {icon: "🎨", title: "Colors", description: "Various Colors", terms: color_terms},
     {icon: "1️⃣", title: "ASL 2 - Week 1", description: "Terms learned in week 1 of ASL 2 course.", terms: asl_2_1_terms},
     {icon: "2️⃣", title: "ASL 2 - Week 2", description: "Terms learned in week 2 of ASL 2 course.", terms: asl_2_2_terms},
-    // {icon: "📝", title: "Sentences", description: "Phrases", terms:sentences}
+    {icon: "📝", title: "Sentences", description: "Phrases", terms: sentences},
+    {icon: "🌎", title: "Countries", description: "Country Names", terms: countries}
     // {icon: "3️⃣", title: "ASL 2 - Week 1", description: "Terms learned in week 1 of ASL 2 course.", terms: terms},
     // {icon: "4️⃣", title: "ASL 2 - Week 1", description: "Terms learned in week 1 of ASL 2 course.", terms: terms},
     // {icon: "5️⃣", title: "ASL 2 - Week 1", description: "Terms learned in week 1 of ASL 2 course.", terms: terms},

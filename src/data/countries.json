@@ -1,0 +1,20 @@
+[
+    {"term": "Country", "code": "https://www.youtube.com/watch?v=4iJ1t0DklFY"},
+    {"term": "Africa", "code": "https://www.youtube.com/watch?v=ZyH7kuEa18Q"},
+    {"term": "Australia", "code": "https://www.youtube.com/watch?v=Qkec7A7_o8c"},
+    {"term": "Canada", "code": "https://www.youtube.com/watch?v=6wD5KHuM4xE"},
+    {"term": "China", "code": "https://www.youtube.com/watch?v=yLX_qaQY6B8"},
+    {"term": "England", "code": "https://www.youtube.com/watch?v=_Q0GxbRQnKQ"},
+    {"term": "Europe", "code": "https://www.youtube.com/watch?v=gs57N42wVK0"},
+    {"term": "France", "code": "https://www.youtube.com/watch?v=mhxJADfOYRU"},
+    {"term": "Germany", "code": "https://www.youtube.com/watch?v=pn2NIz6Nw_A"},
+    {"term": "India", "code": "https://www.youtube.com/watch?v=kw4mnCKHY7I"},
+    {"term": "Iran", "code": "https://www.youtube.com/watch?v=lWgoRSVEz9s"},
+    {"term": "Iraq", "code": "https://www.youtube.com/watch?v=9I8NhjSBQuY"},
+    {"term": "Ireland", "code": "https://www.youtube.com/watch?v=D0F6keeYsNg"},
+    {"term": "Mexico", "code": "https://www.youtube.com/watch?v=9hDYv623eyM"},
+    {"term": "Russia", "code": "https://www.youtube.com/watch?v=YSAX7AP-JW4"},
+    {"term": "UK", "code": "https://www.youtube.com/watch?v=Wq7h19-eSV0"},
+    {"term": "USA", "code": "https://www.youtube.com/watch?v=VG1ccC2LJXM"}
+]
+
