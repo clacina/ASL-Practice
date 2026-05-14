@@ -1,171 +1,17 @@
-import styled from "styled-components";
 import {useEffect, useRef, useState} from "react";
 import toast from "react-hot-toast";
-import axios from "axios";
 import Tippy from "@tippyjs/react";
 import {FlashcardPlayer} from "./FlashcardPlayer.jsx";
-
-// Structure ─────────────────────────────────────────────────────────────
-/*
-        <NumbersComponentContainer>
-            <NumbersComponentHeader>
-                <button className="btn-back" onClick={onBack}>← Back</button>
-                <div className="text-header">
-                    <h1>NumbersComponent</h1>
-                    <NumbersComponentTitle style={{fontFamily: "Gallaudet", fontSize: "3rem", color: "white"}}>
-                        Learn how to fingerspell
-                    </NumbersComponentTitle>
-                </div>
-            </NumbersComponentHeader>
-            <NumbersComponent>
-                <div>
-                    <FingerCharacter>
-                        {word[step]}
-                    </FingerCharacter>
-                    {showHint && <NumbersComponentHint>
-                        {word[step]}
-                    </NumbersComponentHint>}
-                </div>
-                <NumbersComponentNav>
-                    <NumbersComponentCheck>
-                        <input onChange={updateEntry} value={wordEntry}/>
-                        <button onClick={checkEntry}>Check</button>
-                    </NumbersComponentCheck>
-                </NumbersComponentNav>
-                <NumbersComponentTermsList>
-                    <ul>
-                    </ul>
-                </NumbersComponentTermsList>
-            </NumbersComponent>
-        </NumbersComponentContainer>
- */
-
-
-// Styling ─────────────────────────────────────────────────────────────
-
-const NumbersComponentContainer = styled.div`
-    width: 100%;
-`;
-
-const NumbersComponentHeader = styled.div`
-    display: flex;
-    flex-direction: row;
-
-    .btn-back {
-        width: 100px;
-
-        flex-shrink: 0;
-        align-self: flex-start;
-        background: none;
-        border: none;
-        padding: 0;
-        color: var(--text);
-        font-size: 15px;
-        cursor: pointer;
-        transition: color 0.2s;
-        z-index: 100;
-
-        &:hover {
-            color: var(--text-h);
-        }
-    }
-
-    h1 {
-        //border: 1px solid pink;
-        width: 100%;
-        margin-top: 10px;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .text-header {
-        width: 100%;
-        margin-left: -100px;
-    }
-    
-    ul {
-        display: flex;
-        list-style: none;
-        gap: 15px;
-        padding: 0;
-        text-align: left;
-    }
-
-    li {
-        border-right: 1px solid grey;
-        font-size: small;
-        line-height: 15px;
-    }
-
-    li:last-child {
-        border-right: none;
-    }
-`;
-
-const NumbersComponentTitle = styled.h2`
-    margin-top: -20px;
-`;
-
-const NumbersComponent = styled.div`
-    //border: 1px solid blue;
-    display: flex;
-    justify-content: space-between;
-    
-    .flashcard-video {
-        max-width: 400px;
-    }
-`;
-
-const NumbersComponentNav = styled.nav`
-    //border: 1px solid yellow;
-    flex: 1;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-
-    button {
-        width: 150px;
-    }
-`;
-
-const NumbersComponentTermsList = styled.div`
-    flex: none;
-    width: 200px;
-    border: 1px solid pink;
-    max-height: 330px;
-    overflow-y: auto;
-
-    ul {
-        list-style: none;
-        text-align: left;
-    }
-`;
-
-/*
-    CSS calc()
-    Spaces around operators: You must include a space on both sides of the subtraction (-) operator. If you write calc(100px-2rem), it will be
-        treated as an invalid expression or a negative number.
-    Mixed Units: calc() is the only native CSS way to do this because rem is relative (based on the root font size, usually 16px)
-        and px is absolute. The browser calculates the final pixel value at runtime
-
- */
-
-
-const NumbersComponentHint = styled.p`
-    width: 400px;
-    border: 1px solid orange;
-    height: 2rem;
-`;
-
-const ButtonNav = styled.div`
-    border: 1px solid green;
-`;
-
-const NumbersComponentCheck = styled.div`
-    border: 1px solid orange;
-    width: 100%;
-    margin-top: auto;
-`;
+import {
+    NumbersComponentContainer,
+    NumbersComponentHeader,
+    NumbersComponentBody,
+    NumbersComponentNav,
+    NumbersComponentTermsList,
+    NumbersComponentHint,
+    ButtonNav,
+    NumbersComponentCheck,
+} from "./NumbersComponent.styles.js";
 
 import number_terms from "../data/numbers.json" with {type: "json"};
 
@@ -347,7 +193,7 @@ export default function NumbersSession({onBack}) {
                     </ul>
                 </div>
             </NumbersComponentHeader>
-            <NumbersComponent>
+            <NumbersComponentBody>
                 <div>
                     <FlashcardPlayer
                         url={playbackUrl}
@@ -425,7 +271,7 @@ export default function NumbersSession({onBack}) {
                         ))}
                     </select>
                 </NumbersComponentTermsList>
-            </NumbersComponent>
+            </NumbersComponentBody>
         </NumbersComponentContainer>
     );
 };
