@@ -11,6 +11,7 @@ import "./landingpage.css";
 import {Toaster} from "react-hot-toast";
 import FingerspellComponent from "./components/Fingerspell.jsx";
 import SentencesComponent from "./components/SentencesSession.jsx";
+import NumbersSession from "./components/NumbersComponent.jsx";
 
 function App() {
     const [view, setView] = useState(() => sessionStorage.getItem("asl-unlocked") ? "input" : "gate");
@@ -63,12 +64,11 @@ function App() {
                                         description={categoryDescription}
             /> }
             {view === "fingerspell" && <FingerspellComponent
-                                        terms={terms}
                                         onBack={handleBack}
-                                        title={categoryTitle}
-                                        description={categoryDescription}
             />}
-            {view === "numbers" && <FlashcardSession/>}
+            {view === "numbers" && <NumbersSession
+                                        onBack={handleBack}
+            />}
             {view === "sentences" && <SentencesComponent
                                       onBack={handleBack}
                                       terms={terms}

@@ -1,32 +1,183 @@
 [
-    {"term": "Bottle", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/BOTTLE-47.mp4"},
-    {"term": "Camper", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/camper.mp4"},
-    {"term": "Camping", "code": "https://media.signbsl.com/videos/asl/mariekatzenbachschool/mp4/camping.mp4"},
-    {"term": "Dress", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/4bH5_C1XJTE.mp4"},
-    {"term": "Fairy", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/npbm43CeWqM.mp4"},
-    {"term":  "First Aid", "code": "https://player.vimeo.com/external/392127258.sd.mp4?s=b5f2cc211a4a27935975227c922dc86d614d2b7b&profile_id=164"},
-    {"term": "Horse", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/horse.mp4"},
-    {"term": "Joust (Clash)", "code": "https://www.lifeprint.com/asl101/videos/clash_flash.mp4"},
-    {"term": "King", "code": ""},
-    {"term": "Knife", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/KNIFE-167.mp4"},
-    {"term": "Knight", "code": "https://www.youtube.com/watch?v=XeQ1TwCKy_U"},
-    {"term": "Park", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/OhugS4ENgkg.mp4"},
-    {"term": "Parking lot", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/oWm64Do5zW0.mp4"},
-    {"term": "Pickle (also Pineapple)", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/PICKLE-2008.mp4"},
-    {"term": "Prince", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/prince.mp4"},
-    {"term": "Princess", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/princess.mp4"},
-    {"term": "Queen", "code": ""},
-    {"term": "Sword", "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/sword.mp4"},
-    {"term": "Welcome", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/tQBaI8oi6tw.mp4"},
-    {"term": "Parents", "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/PARENTS-696.mp4"},
-    {"term": "Do you need help?", "code": "https://www.youtube.com/embed/HDwqcA11tx4?rel=0"},
-    {"term": "Do you understand?", "code": "https://www.youtube.com/embed/plJHFy1RcMI?rel=0"},
-    {"term": "Do you want to play a game?", "code": "https://www.youtube.com/embed/aRxUSAA_k2w?rel=0"},
-    {"term": "How are you?", "code": "https://www.youtube.com/embed/JPtdvzvpWMQ?rel=0"},
-    {"term": "How did you get here?", "code": "https://www.youtube.com/embed/8Gl6aTI1zAQ?rel=0"},
-    {"term": "How many siblings do you have?", "code": "https://www.youtube.com/embed/gPjmZURJgWg?rel=0"},
-    {"term": "How much does it cost?", "code": "https://www.youtube.com/embed/wPwZpfA397c?rel=0"},
-    {"term": "How old are you?", "code": "https://www.youtube.com/embed/yQD5HyEyWkI?rel=0"},
-    {"term": "What is your phone number", "code": "https://media.signbsl.com/videos/asl/startasl/mp4/what-is-your-phone-number.mp4"}
+  {
+    "term": "Bottle",
+    "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/BOTTLE-47.mp4"
+  },
+  {
+    "term": "Camper",
+    "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/camper.mp4"
+  },
+  {
+    "term": "Camping",
+    "code": "https://media.signbsl.com/videos/asl/mariekatzenbachschool/mp4/camping.mp4"
+  },
+  {
+    "term": "Dress",
+    "code": "https://media.signbsl.com/videos/asl/youtube/mp4/4bH5_C1XJTE.mp4"
+  },
+  {
+    "term": "Fairy",
+    "code": "https://media.signbsl.com/videos/asl/youtube/mp4/npbm43CeWqM.mp4"
+  },
+  {
+    "term": "First Aid",
+    "code": "https://player.vimeo.com/external/392127258.sd.mp4?s=b5f2cc211a4a27935975227c922dc86d614d2b7b&profile_id=164"
+  },
+  {
+    "term": "Horse",
+    "code": "https://media.signbsl.com/videos/asl/startasl/mp4/horse.mp4"
+  },
+  {
+    "term": "Joust (Clash)",
+    "code": "https://www.lifeprint.com/asl101/videos/clash_flash.mp4"
+  },
+  {
+    "term": "King",
+    "code": ""
+  },
+  {
+    "term": "Knife",
+    "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/KNIFE-167.mp4"
+  },
+  {
+    "term": "Knight",
+    "code": "https://www.youtube.com/watch?v=XeQ1TwCKy_U"
+  },
+  {
+    "term": "Park",
+    "code": "https://media.signbsl.com/videos/asl/youtube/mp4/OhugS4ENgkg.mp4"
+  },
+  {
+    "term": "Parking lot",
+    "code": "https://media.signbsl.com/videos/asl/youtube/mp4/oWm64Do5zW0.mp4"
+  },
+  {
+    "term": "Pickle (also Pineapple)",
+    "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/PICKLE-2008.mp4"
+  },
+  {
+    "term": "Prince",
+    "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/prince.mp4"
+  },
+  {
+    "term": "Princess",
+    "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/princess.mp4"
+  },
+  {
+    "term": "Queen",
+    "code": ""
+  },
+  {
+    "term": "Sword",
+    "code": "https://media.signbsl.com/videos/asl/aslsearch/mp4/sword.mp4"
+  },
+  {
+    "term": "Welcome",
+    "code": "https://media.signbsl.com/videos/asl/youtube/mp4/tQBaI8oi6tw.mp4"
+  },
+  {
+    "term": "Parents",
+    "code": "https://media.signbsl.com/videos/asl/aslsignbank/mp4/PARENTS-696.mp4"
+  },
+  {
+    "term": "Do you need help?",
+    "code": "https://www.youtube.com/embed/HDwqcA11tx4?rel=0"
+  },
+  {
+    "term": "Do you understand?",
+    "code": "https://www.youtube.com/embed/plJHFy1RcMI?rel=0"
+  },
+  {
+    "term": "Do you want to play a game?",
+    "code": "https://www.youtube.com/embed/aRxUSAA_k2w?rel=0"
+  },
+  {
+    "term": "How are you?",
+    "code": "https://www.youtube.com/embed/JPtdvzvpWMQ?rel=0"
+  },
+  {
+    "term": "How did you get here?",
+    "code": "https://www.youtube.com/embed/8Gl6aTI1zAQ?rel=0"
+  },
+  {
+    "term": "How many siblings do you have?",
+    "code": "https://www.youtube.com/embed/gPjmZURJgWg?rel=0"
+  },
+  {
+    "term": "How much does it cost?",
+    "code": "https://www.youtube.com/embed/wPwZpfA397c?rel=0"
+  },
+  {
+    "term": "How old are you?",
+    "code": "https://www.youtube.com/embed/yQD5HyEyWkI?rel=0"
+  },
+  {
+    "term": "What is your phone number",
+    "code": "https://media.signbsl.com/videos/asl/startasl/mp4/what-is-your-phone-number.mp4"
+  },
+  {
+    "term": "Beer",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Beer%20var-wX78EPtSuzU.mp4"
+  },
+  {
+    "term": "Crepe",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Crepe-bcHahEqTzuA.mp4"
+  },
+  {
+    "term": "Doughnut",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Doughnut-LJgG-jJAZUg.mp4"
+  },
+  {
+    "term": "Hamburger",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Hamburger-N6o8WBkjFK4.mp4"
+  },
+  {
+    "term": "Honey",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Honey%202-BW6iLCTPYx8.mp4"
+  },
+  {
+    "term": "Hot Dog",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Sausage%2C%20Hot%20Dog-rfFblMZW92c.mp4"
+  },
+  {
+    "term": "Ice Cream",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Ice%20Cream%202-blIP3pcEkmY.mp4"
+  },
+  {
+    "term": "Mushroom",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Mushroom%2C%20Championship-FwEsnbhJcdw.mp4"
+  },
+  {
+    "term": "Nut",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Nut-3EyoOwwqMi4.mp4"
+  },
+  {
+    "term": "Pizza",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Pizza-mJVC9oI13Lo.mp4"
+  },
+  {
+    "term": "Popcorn",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/SignSchool%20Popcorn.mp4"
+  },
+  {
+    "term": "Potato",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Potato-bMnw7FVrglA.mp4"
+  },
+  {
+    "term": "Pretzel",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Olympics-clU8I371n5Y.mp4"
+  },
+  {
+    "term": "Sandwich",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/SignSchool%20Sandwich.mp4"
+  },
+  {
+    "term": "Soda",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Soda-vSOMm-bPMm4.mp4"
+  },
+  {
+    "term": "Wine",
+    "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Wine-uQou6pZTucA.mp4"
+  }
 ]
 

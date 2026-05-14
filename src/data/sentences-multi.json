@@ -38,11 +38,27 @@
         "https://media.signbsl.com/videos/asl/startasl/mp4/you.mp4",
         "https://media.signbsl.com/videos/asl/youtube/mp4/wcA5c3BrHQA.mp4"
     ]},
-    {"term": "I drive a silver truck", "codes":  [
+    {"term": "I drive a silver truck", "codes": [
         "https://media.signbsl.com/videos/asl/youtube/mp4/qIaZAO2YlYk.mp4",
         "https://media.signbsl.com/videos/asl/aslsearch/mp4/drive.mp4",
-        "https://media.signbsl.com/videos/asl/youtube/mp4/dV1b82QTb7s.mp4",
+        "https://media.signbsl.com/videos/asl/youtube/mp4/9fWuTtBHMGY.mp4",
         "https://media.signbsl.com/videos/asl/aslsignbank/mp4/TRUCK-1316.mp4"
+    ]},
+    {"term": "My wife and I like to go camping", "codes" :  [
+        "https://media.signbsl.com/videos/asl/youtube/mp4/3msfJ_fibwg.mp4",
+        "https://media.signbsl.com/videos/asl/aslsignbank/mp4/WIFE-2237.mp4",
+        "https://media.signbsl.com/videos/asl/aslsearch/mp4/and.mp4",
+        "https://media.signbsl.com/videos/asl/youtube/mp4/qIaZAO2YlYk.mp4",
+        "https://media.signbsl.com/videos/asl/startasl/mp4/like.mp4",
+        "https://media.signbsl.com/videos/asl/startasl/mp4/go.mp4",
+        "https://media.signbsl.com/videos/asl/youtube/mp4/khW2tiregWM.mp4"
+    ]},
+    {"term": "I like to go river fishing", "codes": [
+        "https://media.signbsl.com/videos/asl/youtube/mp4/qIaZAO2YlYk.mp4",
+        "https://media.signbsl.com/videos/asl/startasl/mp4/like.mp4",
+        "https://media.signbsl.com/videos/asl/startasl/mp4/go.mp4",
+        "https://media.signbsl.com/videos/asl/signlanguagestudent/mp4/river.mp4",
+        "https://media.signbsl.com/videos/asl/mariekatzenbachschool/mp4/fishing.mp4"
     ]}
 ]
 
