@@ -57,11 +57,12 @@ export default function NumbersSession({onBack}) {
 
     // Term Test Logic ─────────────────────────────────────────────────────────────
     function checkEntry() {
-        if (wordEntry.toLowerCase() === word.slice(1).toLowerCase()) {
+        if (wordEntry === word) {
             toast.success("Correct!");
             nextWord();
             inputRef.current.focus();
         } else {
+            console.log(wordEntry, word);
             toast.error("Wrong word! Try again.");
         }
     }
@@ -90,21 +91,44 @@ export default function NumbersSession({onBack}) {
         setWordIndex(newTermIndex);
     }
 
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
     function nextWord() {
+        const randNumber = getRandomInt(34, 100000);
+          // {"term": "1", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%201-roPWtHm3Udw.mp4"},
+        // build playlist
+        const numberString = randNumber.toString();
+        const newWordList = []
+        for (let i = 0; i < numberString.length; i++) {
+            const term = number_terms.find((t) => t.term === numberString[i]);
+            console.log(term);
+            newWordList.push(term);
+        }
+        setWordList(newWordList);
+        const firstWord = newWordList[0]
+        setPlaybackUrl(firstWord.code);
+        setWord(firstWord.term);
+        setWordIndex(0);
+        setIsActive(true);
+        setAutoPlay(true);
+        setPlaying(true);
     }
 
     function getPlaybackUrl() {
+        console.log("Get url");
         if (wordList.length > 0 && wordIndex > -1) {
             const current = wordList[wordIndex];
+            console.log(current.code);
             return current.code;
         }
     }
 
-    useEffect(() => {
-        setPlaybackUrl(getPlaybackUrl());
-    }, [playbackUrl, wordIndex]);
-
     function onPlay() {
+        console.log("onPlay: ", isActive);
+        console.log("--wl: ", wordList.length);
+        console.log("--curr: ", wordIndex);
+        console.log("--word: ", word);
         if (isActive) {
             setIsActive(false);
             setPlaying(false);
@@ -123,7 +147,6 @@ export default function NumbersSession({onBack}) {
             tip: "",
             icon: ""
         };
-        console.log("Playback", playbackRate);
         switch (playbackRate) {
             case 0.5:
                 returnValue.tip = "Slow - ½×";
@@ -175,6 +198,11 @@ export default function NumbersSession({onBack}) {
                 console.error("Unknown Playback state change: ", stateChange);
         }
     }
+
+    useEffect(() => {
+        setPlaybackUrl(getPlaybackUrl());
+    }, [playbackUrl, wordIndex]);
+
 
     return (
         <NumbersComponentContainer>
