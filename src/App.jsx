@@ -9,6 +9,9 @@ import "./footer.css";
 import "./passphrase.css";
 import "./landingpage.css";
 import {Toaster} from "react-hot-toast";
+import FingerspellComponent from "./components/Fingerspell.jsx";
+import SentencesComponent from "./components/SentencesSession.jsx";
+import NumbersSession from "./components/NumbersComponent.jsx";
 
 function App() {
     const [view, setView] = useState(() => sessionStorage.getItem("asl-unlocked") ? "input" : "gate");
@@ -24,7 +27,17 @@ function App() {
         setCardColors(colors);
         setCategoryTitle(title);
         setCategoryDescription(description);
-        setView("session");
+
+        // Route UI Element based on category title.
+        if(title === "Finger Spelling") {
+            setView("fingerspell");
+        } else if(title === "Numbers") {
+            setView("numbers");
+        } else if(title === "Sentences") {
+            setView("sentences");
+        } else {
+            setView("session");
+        }
     }
 
     function handleBack() {
@@ -42,12 +55,24 @@ function App() {
 
     return (
         <div className="flashcard-app">
-            {view === "input" ? (
-                <LandingPage onStart={handleStart}/>
-            ) : (
-                <FlashcardSession terms={terms} cardColors={cardColors} onBack={handleBack} title={categoryTitle}
-                                  description={categoryDescription}/>
-            )}
+            {view === "input" && <LandingPage onStart={handleStart}/>}
+            {view === "session" && <FlashcardSession
+                                        terms={terms}
+                                        cardColors={cardColors}
+                                        onBack={handleBack}
+                                        title={categoryTitle}
+                                        description={categoryDescription}
+            /> }
+            {view === "fingerspell" && <FingerspellComponent
+                                        onBack={handleBack}
+            />}
+            {view === "numbers" && <NumbersSession
+                                        onBack={handleBack}
+            />}
+            {view === "sentences" && <SentencesComponent
+                                      onBack={handleBack}
+                                      terms={terms}
+            />}
             <Footer/>
             <Toaster />
         </div>

@@ -96,5 +96,11 @@
     {"term": "Who", "code": ""},
     {"term": "Why", "code": ""},
     {"term": "Work", "code": "https://media.signbsl.com/videos/asl/youtube/mp4/hQKYeuN5tMI.mp4"},
-    {"term": "World", "code": ""}
+    {"term": "World", "code": ""},
+    {"term": "Appetizer", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Appetizer-YDERzTpcc6Y.mp4"},
+    {"term": "Breakfast", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Breakfast-THwAruhoYd8.mp4"},
+    {"term": "Dessert", "code": "https://signstock.blob.core.windows.net/signschool/videos/SignSchool%20Dessert%252C%20Dating.mp4"},
+    {"term": "Dinner", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Dinner-9jBzuXsAPvE.mp4"},
+    {"term": "Lunch", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Lunch-X2xNSM8So48.mp4"},
+    {"term": "Snack", "code": "https://signstock.blob.core.windows.net/signschool/videos/db_uploads/SignSchool%20Snack%202-CtUN_tUG-ZA.mp4"}
 ]

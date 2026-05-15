@@ -54,6 +54,13 @@
   }
 }
 
+@font-face {
+  font-family: 'Gallaudet';
+  src: local('Gallaudet'), url('./assets/fonts/GALLAUDET.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body.modal-open {
   overflow: hidden;
 }
